@@ -1,4 +1,6 @@
 #include <Servo.h> // include la Libreria Servo.h
+#include <TaskManager.h>
+
 struct mano_servo
 {
     Servo pollice;
@@ -46,11 +48,17 @@ void setup(){
     mano.pollice.attach(pins.servo_pollice);
 
     setupPinMode();
-    setup_maxLight();
+    setup_maxLight(20);
     Serial.begin(9600);
+    print_maxLight();
 }
 void loop(){
-    print_currentLight();
+  update_currentLight();
+    if(checkPalmo()){
+      print_currentLight();
+      readSegno();
+      delay(6000);
+    };
 }
 
 void setupPinMode(){
@@ -60,11 +68,17 @@ void setupPinMode(){
   pinMode(pins.anulare, INPUT);
 }
 
-void setup_maxLight(){
-  max_light.palmoMano = analogRead(pins.palmoMano);
-  max_light.indice = analogRead(pins.indice);
-  max_light.medio = analogRead(pins.medio);
-  max_light.anulare = analogRead(pins.anulare);
+void setup_maxLight(int n){
+  for (int i=0; i<n; i++){
+    max_light.palmoMano += analogRead(pins.palmoMano);
+    max_light.indice += analogRead(pins.indice);
+    max_light.medio += analogRead(pins.medio);
+    max_light.anulare += analogRead(pins.anulare);
+  }
+  max_light.palmoMano = max_light.palmoMano/n;
+  max_light.indice = max_light.indice/n;
+  max_light.medio = max_light.medio/n;
+  max_light.anulare = max_light.anulare/n;
 }
 
 void readSegno(){
@@ -77,6 +91,7 @@ void readSegno(){
   for (;i<wait; i++){
     Serial.print("Inizio Gesto: resta con il gesto per ");
     Serial.println(wait-i);
+    update_currentLight();
     if (checkIndice() && checkMedio() && checkPalmo() && checkAnulare()){
       carta++;
     }else if (checkIndice() && checkMedio() && checkPalmo()){
@@ -89,33 +104,33 @@ void readSegno(){
     
     delay(1000); // delay di 1 secondo
   }
-  checkSegno(nonRiconosciuto, carta, sasso, forbice);
+  Serial.print("Lo stimatore moda dice: ");
+  checkSegno_moda(nonRiconosciuto, carta, sasso, forbice);
+  Serial.print("Lo stimatore random dice: ");
+  checkSegno_random();
 }
 
 bool checkPalmo(){
-  int current_palmoMano = analogRead(pins.palmoMano);
-  return current_palmoMano < max_light.palmoMano*(1-variazione);
+  return current_light.palmoMano < max_light.palmoMano*(1-variazione);
 }
 
 bool checkIndice(){
-  int current_indice = analogRead(pins.indice);
-  return current_indice < max_light.indice*(1-variazioneDita);
+  return current_light.indice < max_light.indice*(1-variazioneDita);
 }
 
 bool checkMedio(){
-  int current_medio = analogRead(pins.medio);
-  return current_medio < max_light.medio*(1-variazioneDita);
+  return current_light.medio < max_light.medio*(1-variazioneDita);
 }
 
 bool checkAnulare(){
-  int current_anulare = analogRead(pins.anulare);
-  return current_anulare < max_light.anulare*(1-variazioneDita);
+  return current_light.anulare < max_light.anulare*(1-variazioneDita);
 }
 
-void checkSegno(int nonRiconosciuto, int carta, int sasso, int forbice){
+void checkSegno_moda(int nonRiconosciuto, int carta, int sasso, int forbice){
   int countMax= (max(max(max(nonRiconosciuto, carta), sasso), forbice));
   if (countMax = nonRiconosciuto) {
-    Serial.println("Segno non riconosciuto");
+    Serial.print("Segno non riconosciuto ma a caso dico ");
+    checkSegno_random();
     return;
   }
   if (countMax = carta){
@@ -129,6 +144,15 @@ void checkSegno(int nonRiconosciuto, int carta, int sasso, int forbice){
   if (countMax = forbice){
     Serial.println("Forbice!");
   }
+}
+
+void checkSegno_random(){
+  long randomSegno = random(3);
+  switch (randomSegno){
+      case 0: Serial.println("Sasso!"); return;
+      case 1: Serial.println("Carta!"); return;
+      case 2: Serial.println("Forbice!"); return;
+  }  
 }
 
 void update_currentLight(){
