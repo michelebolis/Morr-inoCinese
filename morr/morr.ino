@@ -1,5 +1,22 @@
 #include <Servo.h> // include la Libreria Servo.h
-#include <TaskManager.h>
+#include <TaskScheduler.h>
+
+Scheduler scheduler;
+
+void checkInizioMossa(){
+   update_currentLight();
+   if(checkPalmo()){
+     disattiva_inizioMossa();
+     print_currentLight();
+     readSegno();
+   };
+}
+
+Task inizioMossa(1*TASK_SECOND, TASK_SECOND, checkInizioMossa);
+
+void disattiva_inizioMossa(){
+  inizioMossa.disable();
+}
 
 struct mano_servo
 {
@@ -55,15 +72,13 @@ void setup(){
     setup_maxLight(20);
     Serial.begin(9600);
     print_maxLight();
+    scheduler.init();
+    scheduler.addTask(inizioMossa);
+    inizioMossa.enable();
+    Serial.println("Lettura luce");
 }
 void loop(){
-  
-  update_currentLight();
-    if(checkPalmo()){
-      print_currentLight();
-      readSegno();
-      delay(6000);
-    };
+  scheduler.execute();
 }
 
 void setupPinMode(){
@@ -100,6 +115,7 @@ void torna(){
     delay(15);
   }
 }
+
 
 void readSegno(){
   int nonRiconosciuto = 0;
@@ -157,8 +173,9 @@ void readSegno(){
   }
    delay(1000);
   };
-  
-  
+
+  inizioMossa.enable();
+  Serial.println("Lettura luce");
 }
 
 bool checkPalmo(){
