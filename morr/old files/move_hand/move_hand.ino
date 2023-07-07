@@ -9,14 +9,39 @@ Servo servo_pollice;
 int pos = 0;    // inizializza una variabile di tipo intero pos il cui valore sarà la posizione da impartire al servo
 
 void setup() {
-  servo_indice.attach(8); // lega l'oggetto servo_indice al pin a cui abbiamo collegato il nostro servo, in questo caso il pin 8
-  servo_medio.attach(7);
-  servo_anulare.attach(6);
-  servo_mignolo.attach(5);
-  servo_pollice.attach(4);
+  servo_indice.attach(6); // lega l'oggetto servo_indice al pin a cui abbiamo collegato il nostro servo, in questo caso il pin 8
+  servo_medio.attach(5);
+  servo_anulare.attach(4);
+  servo_mignolo.attach(3);
+  servo_pollice.attach(2);
+  torna();
+}
+
+void loop(){
+  mossa_forbice();
+  delay(30000);
+  torna();
+  delay(30000);
+  mossa_sasso();
+  delay(10000);
+  torna();
+  delay(30000);
+}
+
+void torna(){
+    for (pos = 0; pos < 180; pos ++) // In questo caso imposta un ciclo con valori che vanno da 180 a 0
+  {
+    servo_indice.write(pos);
+    servo_medio.write(pos);
+    servo_anulare.write(pos);
+    servo_mignolo.write(pos);
+    servo_pollice.write(pos);
+    delay(15);
+  }
 }
 
 void mossa_forbice() {
+  /*
   for (pos = 0; pos < 180; pos ++)
   {
     servo_indice.write(pos);
@@ -26,10 +51,9 @@ void mossa_forbice() {
     servo_mignolo.write(pos);
     delay(15);
   }
-
+  */
   for (pos = 180; pos >= 1; pos --)
   {
-    servo_pollice.write(pos);
     servo_anulare.write(pos);
     servo_mignolo.write(pos);
     delay(15);

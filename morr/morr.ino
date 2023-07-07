@@ -22,7 +22,11 @@ struct pin_list
     const int indice = A3;
     const int medio = A2;
     const int anulare = A1;
-
+  
+    const int bottone_sasso = 8;
+    const int bottone_carta = 9;
+    const int bottone_forbice = 10;
+    
     const int servo_indice = 6;
     const int servo_medio = 5;
     const int servo_anulare = 4;
@@ -46,13 +50,14 @@ void setup(){
     mano.anulare.attach(pins.servo_anulare);
     mano.mignolo.attach(pins.servo_mignolo);
     mano.pollice.attach(pins.servo_pollice);
-
+    torna();
     setupPinMode();
     setup_maxLight(20);
     Serial.begin(9600);
     print_maxLight();
 }
 void loop(){
+  
   update_currentLight();
     if(checkPalmo()){
       print_currentLight();
@@ -62,6 +67,9 @@ void loop(){
 }
 
 void setupPinMode(){
+  pinMode(pins.bottone_sasso, INPUT);
+  pinMode(pins.bottone_carta, INPUT);
+  pinMode(pins.bottone_forbice, INPUT);
   pinMode(pins.palmoMano, INPUT);
   pinMode(pins.indice, INPUT);
   pinMode(pins.medio, INPUT);
@@ -79,6 +87,18 @@ void setup_maxLight(int n){
   max_light.indice = max_light.indice/n;
   max_light.medio = max_light.medio/n;
   max_light.anulare = max_light.anulare/n;
+}
+
+void torna(){
+    for (pos = 0; pos < 180; pos ++) // In questo caso imposta un ciclo con valori che vanno da 180 a 0
+  {
+    mano.indice.write(pos);
+    mano.medio.write(pos);
+    mano.anulare.write(pos);
+    mano.mignolo.write(pos);
+    mano.pollice.write(pos);
+    delay(15);
+  }
 }
 
 void readSegno(){
@@ -108,6 +128,37 @@ void readSegno(){
   checkSegno_moda(nonRiconosciuto, carta, sasso, forbice);
   Serial.print("Lo stimatore random dice: ");
   checkSegno_random();
+  while(true){
+   int sasso = digitalRead(pins.bottone_sasso);
+   int carta = digitalRead(pins.bottone_carta);
+   int forbice = digitalRead(pins.bottone_forbice);
+   Serial.println("sasso");
+   Serial.println(sasso);
+   Serial.println("carta");
+   Serial.println(carta);
+   Serial.println("forbice");
+   Serial.println(forbice);
+   Serial.println();
+   if(sasso==1){
+    Serial.println("Hai detto sasso");
+    mossa_sasso();
+    delay(10000);
+    torna();
+    break;
+  }else if(carta==1){
+    Serial.println("Hai detto carta");
+        break;
+  }else if(forbice==1){
+    Serial.println("Hai detto forbice");
+    mossa_forbice();
+    delay(10000);
+    torna();
+        break;
+  }
+   delay(1000);
+  };
+  
+  
 }
 
 bool checkPalmo(){
@@ -189,16 +240,6 @@ void print_maxLight(){
 } 
 
 void mossa_forbice() {
-  for (pos = 0; pos < 180; pos ++)
-  {
-    mano.indice.write(pos);
-    mano.medio.write(pos);
-    mano.pollice.write(pos);
-    mano.anulare.write(pos);
-    mano.mignolo.write(pos);
-    delay(15);
-  }
-
   for (pos = 180; pos >= 1; pos --)
   {
     mano.pollice.write(pos);
@@ -209,18 +250,6 @@ void mossa_forbice() {
 }
 
 void mossa_sasso() {
-  for (pos = 0; pos < 180; pos ++) // imposta un ciclo con valori che vanno da 0 a 180, sarano i gradi di spostamento del nostro servo
-  {
-    mano.indice.write(pos);              // con il metodo write() passi all'oggetto myservo la posizione che deve raggiungere,
-    // il servo si sposterà gradualmente dalla sua posizione 0° alla posizione 180°
-    mano.medio.write(pos);
-    mano.anulare.write(pos);
-    mano.mignolo.write(pos);
-    mano.pollice.write(pos);
-    delay(15);                       // imposta un ritardo di 15 millesimi di secondo per ogni ciclo del for.
-    // Più sarà alto il ritardo più il servo sarà lento.
-  }
-
   for (pos = 180; pos >= 1; pos -= 1) // In questo caso imposta un ciclo con valori che vanno da 180 a 0
   {
     mano.indice.write(pos);
