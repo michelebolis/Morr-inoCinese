@@ -1,22 +1,6 @@
 #include <Servo.h> // include la Libreria Servo.h
 #include <TaskScheduler.h>
 
-Scheduler scheduler;
-
-void checkInizioMossa(){
-   update_currentLight();
-   if(checkPalmo()){
-     disattiva_inizioMossa();
-     print_currentLight();
-     readSegno();
-   };
-}
-
-Task inizioMossa(1*TASK_SECOND, TASK_SECOND, checkInizioMossa);
-
-void disattiva_inizioMossa(){
-  inizioMossa.disable();
-}
 
 struct mano_servo
 {
@@ -56,6 +40,68 @@ mano_servo mano;
 light_detected max_light;
 light_detected current_light;
 
+Scheduler scheduler;
+
+void checkInizioMossa(){
+   update_currentLight();
+   if(checkPalmo()){
+     disattiva_inizioMossa();
+     print_currentLight();
+     readSegno();
+   };
+}
+
+Task inizioMossa(1*TASK_SECOND, TASK_SECOND, checkInizioMossa);
+
+void disattiva_inizioMossa(){
+  inizioMossa.disable();
+}
+
+void backto(){
+  torna();
+  disattiva_backto();
+}
+
+Task backto_inizioMossa(1*TASK_SECOND, TASK_SECOND, backto);
+
+void checkBottoni(){
+  int sasso = digitalRead(pins.bottone_sasso);
+  int carta = digitalRead(pins.bottone_carta);
+  int forbice = digitalRead(pins.bottone_forbice);
+  if(sasso==1){
+      Serial.println("Hai detto sasso");
+      disattiva_selezionaMossa();
+      mossa_sasso();
+      backto_inizioMossa.enableDelayed(5000);
+      Serial.println("Guarda la tua mossa");
+  }else if(carta==1){
+      Serial.println("Hai detto carta");
+      disattiva_selezionaMossa();
+      backto_inizioMossa.enableDelayed(5000);
+      Serial.println("Guarda la tua mossa");
+   }else if(forbice==1){
+      Serial.println("Hai detto forbice");
+      disattiva_selezionaMossa();
+      mossa_forbice();
+      backto_inizioMossa.enableDelayed(5000);
+      Serial.println("Guarda la tua mossa");  
+   }
+}
+
+Task selezionaMossa(1*TASK_SECOND, TASK_SECOND, checkBottoni);
+
+void disattiva_selezionaMossa(){
+  selezionaMossa.disable();
+}
+
+
+void disattiva_backto(){
+  backto_inizioMossa.disable();
+  inizioMossa.enable();
+  Serial.println("Lettura luce");
+}
+
+
 int pos = 0;    // inizializza una variabile di tipo intero pos il cui valore sarà la posizione da impartire al servo
 
 float variazione = 0.1;
@@ -74,6 +120,8 @@ void setup(){
     print_maxLight();
     scheduler.init();
     scheduler.addTask(inizioMossa);
+    scheduler.addTask(selezionaMossa);
+    scheduler.addTask(backto_inizioMossa);
     inizioMossa.enable();
     Serial.println("Lettura luce");
 }
@@ -144,38 +192,7 @@ void readSegno(){
   checkSegno_moda(nonRiconosciuto, carta, sasso, forbice);
   Serial.print("Lo stimatore random dice: ");
   checkSegno_random();
-  while(true){
-   int sasso = digitalRead(pins.bottone_sasso);
-   int carta = digitalRead(pins.bottone_carta);
-   int forbice = digitalRead(pins.bottone_forbice);
-   Serial.println("sasso");
-   Serial.println(sasso);
-   Serial.println("carta");
-   Serial.println(carta);
-   Serial.println("forbice");
-   Serial.println(forbice);
-   Serial.println();
-   if(sasso==1){
-    Serial.println("Hai detto sasso");
-    mossa_sasso();
-    delay(10000);
-    torna();
-    break;
-  }else if(carta==1){
-    Serial.println("Hai detto carta");
-        break;
-  }else if(forbice==1){
-    Serial.println("Hai detto forbice");
-    mossa_forbice();
-    delay(10000);
-    torna();
-        break;
-  }
-   delay(1000);
-  };
-
-  inizioMossa.enable();
-  Serial.println("Lettura luce");
+  selezionaMossa.enable();
 }
 
 bool checkPalmo(){
