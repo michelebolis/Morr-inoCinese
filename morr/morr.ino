@@ -40,6 +40,11 @@ mano_servo mano;
 light_detected max_light;
 light_detected current_light;
 
+//result of each 
+int moda;
+int randomize;
+int mossa;
+
 Scheduler scheduler;
 
 void checkInizioMossa(){
@@ -72,19 +77,25 @@ void checkBottoni(){
       Serial.println("Hai detto sasso");
       disattiva_selezionaMossa();
       mossa_sasso();
+      mossa=0;
       backto_inizioMossa.enableDelayed(5000);
       Serial.println("Guarda la tua mossa");
+      print_risultati();
   }else if(carta==1){
       Serial.println("Hai detto carta");
       disattiva_selezionaMossa();
+      mossa=1;
       backto_inizioMossa.enableDelayed(5000);
       Serial.println("Guarda la tua mossa");
+      print_risultati();
    }else if(forbice==1){
       Serial.println("Hai detto forbice");
       disattiva_selezionaMossa();
       mossa_forbice();
+      mossa=2;
       backto_inizioMossa.enableDelayed(5000);
-      Serial.println("Guarda la tua mossa");  
+      Serial.println("Guarda la tua mossa");
+      print_risultati();  
    }
 }
 
@@ -164,6 +175,30 @@ void torna(){
   }
 }
 
+void print_risultati(){
+  Serial.println();
+  Serial.print("Risultati: Mossa effettuata: ");
+  switch (mossa){
+    case 0: Serial.print("sasso"); break;
+    case 1: Serial.print("carta"); break;
+    case 2: Serial.print("forbice"); break;
+  }
+  Serial.println("!");
+  Serial.print("Mossa rilevata: ");
+  switch (moda){
+    case 0: Serial.print("sasso"); break;
+    case 1: Serial.print("carta"); break;
+    case 2: Serial.print("forbice"); break;
+  }
+  Serial.print(", ");
+  switch (randomize){
+    case 0: Serial.print("sasso"); break;
+    case 1: Serial.print("carta"); break;
+    case 2: Serial.print("forbice"); break;
+  }
+  Serial.println("!");
+  Serial.println();
+}
 
 void readSegno(){
   int nonRiconosciuto = 0;
@@ -189,9 +224,9 @@ void readSegno(){
     delay(1000); // delay di 1 secondo
   }
   Serial.print("Lo stimatore moda dice: ");
-  checkSegno_moda(nonRiconosciuto, carta, sasso, forbice);
+  moda = checkSegno_moda(nonRiconosciuto, carta, sasso, forbice);
   Serial.print("Lo stimatore random dice: ");
-  checkSegno_random();
+  randomize = checkSegno_random();
   selezionaMossa.enable();
 }
 
@@ -211,32 +246,32 @@ bool checkAnulare(){
   return current_light.anulare < max_light.anulare*(1-variazioneDita);
 }
 
-void checkSegno_moda(int nonRiconosciuto, int carta, int sasso, int forbice){
+int checkSegno_moda(int nonRiconosciuto, int carta, int sasso, int forbice){
   int countMax= (max(max(max(nonRiconosciuto, carta), sasso), forbice));
   if (countMax = nonRiconosciuto) {
     Serial.print("Segno non riconosciuto ma a caso dico ");
-    checkSegno_random();
-    return;
+    return checkSegno_random();
   }
   if (countMax = carta){
     Serial.println("Carta!");
-    return;
+    return 1;
   }
   if (countMax = sasso){
     Serial.println("Sasso!");
-    return;
+    return 0;
   }
   if (countMax = forbice){
     Serial.println("Forbice!");
+    return 2;
   }
 }
 
-void checkSegno_random(){
+int checkSegno_random(){
   long randomSegno = random(3);
   switch (randomSegno){
-      case 0: Serial.println("Sasso!"); return;
-      case 1: Serial.println("Carta!"); return;
-      case 2: Serial.println("Forbice!"); return;
+      case 0: Serial.println("Sasso!"); return 0;
+      case 1: Serial.println("Carta!"); return 1;
+      case 2: Serial.println("Forbice!"); return 2;
   }  
 }
 
