@@ -1,7 +1,9 @@
-#include <Servo.h> // include la Libreria Servo.h
+#include <Servo.h>
 #include <TaskScheduler.h>
 
-
+/**
+ * Struttura della mano meccanica le cui dita vengono mosse tramite appositi Servo-Motori
+*/
 struct mano_servo
 {
     Servo pollice;
@@ -10,6 +12,10 @@ struct mano_servo
     Servo anulare;
     Servo mignolo;
 };
+
+/**
+ * Struttura di interi che rappresenta la luce letta in 4 punti: il palmo della mano, il dito indice, il medio e l'anulare.
+*/
 struct light_detected
 {
     int palmoMano;
@@ -17,6 +23,10 @@ struct light_detected
     int medio;
     int anulare;
 };
+
+/**
+ * Struttura di costanti intere rappresentati i pin della board adibiti al funzionamento dell'intero circuito.
+*/
 struct pin_list 
 {
     const int palmoMano = A4;
@@ -35,18 +45,24 @@ struct pin_list
     const int servo_pollice = 2;
 };
 
+
 pin_list pins;
 mano_servo mano;
 light_detected max_light;
 light_detected current_light;
 
-//result of each 
+/** Risultati */
 int moda;
 int randomize;
 int mossa;
 
+/** Nuovo oggetto Scheduler istanziato per i Task che comporranno il circuito */
 Scheduler scheduler;
 
+/**
+ * Aggiorna la lettura della luce corrente e controlla che non venga rilevato il palmo della mano.
+ * Nel caso in cui lo rilevasse, comincia la lettura del segno.
+*/
 void checkInizioMossa(){
    update_currentLight();
    if(checkPalmo()){
@@ -56,19 +72,30 @@ void checkInizioMossa(){
    };
 }
 
+/** Task iniziale di inizio mossa */
 Task inizioMossa(1*TASK_SECOND, TASK_SECOND, checkInizioMossa);
 
+/**
+ * Disattiva il Task predisposto all'inizio di una mossa.
+*/
 void disattiva_inizioMossa(){
   inizioMossa.disable();
 }
 
+/**
+ * Funzione che posizione le dita della mano in posizione neutra e fa tornare lo stato dello Scheduler al Task "inizio mossa".
+*/
 void backto(){
   torna();
   disattiva_backto();
 }
 
+/** Task di ritorno allo stato di inizio mossa */
 Task backto_inizioMossa(1*TASK_SECOND, TASK_SECOND, backto);
 
+/**
+ * Funzione che rileva, grazie alla pressione dell'utente di uno dei 3 bottoni preposti, la mossa effettuata segnalandolo all'utente tramite stampa di un messaggio ed il movimento della mano meccanica.
+*/
 void checkBottoni(){
   int sasso = digitalRead(pins.bottone_sasso);
   int carta = digitalRead(pins.bottone_carta);
@@ -99,13 +126,19 @@ void checkBottoni(){
    }
 }
 
+/** Task per la mossa da selezionare */
 Task selezionaMossa(1*TASK_SECOND, TASK_SECOND, checkBottoni);
 
+/**
+ * Disattiva il Task predisposto alla selezione di una mossa.
+*/
 void disattiva_selezionaMossa(){
   selezionaMossa.disable();
 }
 
-
+/**
+ * Disattiva il Task predisposto al ritorno in stato di "inizio mossa" (backto_inizioMossa) ed attiva quello di inizio di una nuova mossa.
+*/
 void disattiva_backto(){
   backto_inizioMossa.disable();
   inizioMossa.enable();
@@ -113,33 +146,47 @@ void disattiva_backto(){
 }
 
 
-int pos = 0;    // inizializza una variabile di tipo intero pos il cui valore sarà la posizione da impartire al servo
+/** Variabile di tipo intero il cui valore sarà la posizione, in gradi, da impartire al servo */
+int pos = 0;
 
+
+/** Variabili di tipo float necessarie per il calcolo più accurato dei valori riguardanti la luce rilevata durante l'esecuzione di una mossa */
 float variazione = 0.1;
 float variazioneDita = 0.05;
 
+
 void setup(){
-    mano.indice.attach(pins.servo_indice); // lega l'oggetto servo_indice al pin a cui abbiamo collegato il nostro servo, in questo caso il pin 8
+    mano.indice.attach(pins.servo_indice); // Lega l'oggetto servo_indice al pin a cui abbiamo collegato il nostro servo, in questo caso il pin 8
     mano.medio.attach(pins.servo_medio);
     mano.anulare.attach(pins.servo_anulare);
     mano.mignolo.attach(pins.servo_mignolo);
     mano.pollice.attach(pins.servo_pollice);
-    torna();
-    setupPinMode();
+
+    torna(); // Fa tornare sempre la mano in posizione neutra
+    
+    setupPinMode(); // Inizializzazione dei pin di input
     setup_maxLight(20);
+
     Serial.begin(9600);
-    print_maxLight();
+    print_maxLight(); // Stampa della luce massima (corrispondente alla luce iniziale)
+
+    /** Gestione dello Scheduler e dei Task che lo compongono */
     scheduler.init();
     scheduler.addTask(inizioMossa);
     scheduler.addTask(selezionaMossa);
     scheduler.addTask(backto_inizioMossa);
-    inizioMossa.enable();
+    inizioMossa.enable(); // Attivazione del Task di inizio mossa
+
     Serial.println("Lettura luce");
 }
+
 void loop(){
   scheduler.execute();
 }
 
+/**
+ * Inizializza i pin del circuito predisposti agli input.
+*/
 void setupPinMode(){
   pinMode(pins.bottone_sasso, INPUT);
   pinMode(pins.bottone_carta, INPUT);
@@ -150,6 +197,9 @@ void setupPinMode(){
   pinMode(pins.anulare, INPUT);
 }
 
+/**
+ * Inizializza la luce "massima", ovvero la luce iniziale letta appena il circuito viene acceso.
+*/
 void setup_maxLight(int n){
   for (int i=0; i<n; i++){
     max_light.palmoMano += analogRead(pins.palmoMano);
@@ -163,8 +213,11 @@ void setup_maxLight(int n){
   max_light.anulare = max_light.anulare/n;
 }
 
+/**
+ * Funzione predisposta a far tornare in posizione neutra la mano.
+*/
 void torna(){
-    for (pos = 0; pos < 180; pos ++) // In questo caso imposta un ciclo con valori che vanno da 180 a 0
+    for (pos = 0; pos < 180; pos ++) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
   {
     mano.indice.write(pos);
     mano.medio.write(pos);
@@ -175,6 +228,9 @@ void torna(){
   }
 }
 
+/**
+ * Stampa i risultati della mossa effettuata dopo la pressione del bottone e stampa anche i rilevamenti degli stimatori moda e random.
+*/
 void print_risultati(){
   Serial.println();
   Serial.print("Risultati: Mossa effettuata: ");
@@ -200,6 +256,9 @@ void print_risultati(){
   Serial.println();
 }
 
+/**
+ * Rileva la mossa avvalendosi di 5 secondi per farlo correttamente e ne stampa i risultati dei vari stimatori.
+*/
 void readSegno(){
   int nonRiconosciuto = 0;
   int carta = 0;
@@ -230,22 +289,37 @@ void readSegno(){
   selezionaMossa.enable();
 }
 
+/**
+ * Funzione predisposta al controllo della variazione di luce sul palmo della mano.
+*/
 bool checkPalmo(){
   return current_light.palmoMano < max_light.palmoMano*(1-variazione);
 }
 
+/**
+ * Funzione predisposta al controllo della variazione di luce sul dito indice.
+*/
 bool checkIndice(){
   return current_light.indice < max_light.indice*(1-variazioneDita);
 }
 
+/**
+ * Funzione predisposta al controllo della variazione di luce sul dito medio.
+*/
 bool checkMedio(){
   return current_light.medio < max_light.medio*(1-variazioneDita);
 }
 
+/**
+ * Funzione predisposta al controllo della variazione di luce sul dito anulare.
+*/
 bool checkAnulare(){
   return current_light.anulare < max_light.anulare*(1-variazioneDita);
 }
 
+/**
+ * Stabilisce il segno effettuato dall'utente confrontando il massimo tra i valori che possono essere rilevati (non riconosciuto, carta, forbice e sasso) e lo stampa.
+*/
 int checkSegno_moda(int nonRiconosciuto, int carta, int sasso, int forbice){
   int countMax= (max(max(max(nonRiconosciuto, carta), sasso), forbice));
   if (countMax = nonRiconosciuto) {
@@ -266,6 +340,9 @@ int checkSegno_moda(int nonRiconosciuto, int carta, int sasso, int forbice){
   }
 }
 
+/**
+ * Stabilisce randomicamente un segno fra i 3 possibili e lo stampa.
+*/
 int checkSegno_random(){
   long randomSegno = random(3);
   switch (randomSegno){
@@ -275,6 +352,9 @@ int checkSegno_random(){
   }  
 }
 
+/**
+ * Aggiorna i valori riguardanti la luce letta al momento.
+*/
 void update_currentLight(){
   current_light.palmoMano = analogRead(pins.palmoMano);
   current_light.indice = analogRead(pins.indice);
@@ -282,6 +362,9 @@ void update_currentLight(){
   current_light.anulare = analogRead(pins.anulare);
 }
 
+/**
+ * Stampa i valori correnti della luce letta per il palmo della mano e le 3 dita interessate (indice, medio ed anulare).
+*/
 void print_currentLight(){
     update_currentLight();
     Serial.print("palmoMano: ");
@@ -297,6 +380,9 @@ void print_currentLight(){
     delay(1000);
 }
 
+/**
+ * Stampa i valori massimi della luce letta per il palmo della mano e le 3 dita interessate (indice, medio ed anulare).
+*/
 void print_maxLight(){
   Serial.print("Max Luce palmo mano: ");
     Serial.println(max_light.palmoMano);
@@ -308,8 +394,11 @@ void print_maxLight(){
     Serial.println(max_light.anulare);
 } 
 
+/**
+ * Sposta, in gradi, le alette dei servo-motori in modo tale da far muovere la mano e ricreare la mossa della forbice.
+*/
 void mossa_forbice() {
-  for (pos = 180; pos >= 1; pos --)
+  for (pos = 180; pos >= 1; pos --) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
   {
     mano.pollice.write(pos);
     mano.anulare.write(pos);
@@ -318,8 +407,11 @@ void mossa_forbice() {
   }
 }
 
+/**
+ * Sposta, in gradi, le alette dei servo-motori in modo tale da far muovere la mano e ricreare la mossa del sasso.
+*/
 void mossa_sasso() {
-  for (pos = 180; pos >= 1; pos -= 1) // In questo caso imposta un ciclo con valori che vanno da 180 a 0
+  for (pos = 180; pos >= 1; pos -= 1) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
   {
     mano.indice.write(pos);
     mano.medio.write(pos);
