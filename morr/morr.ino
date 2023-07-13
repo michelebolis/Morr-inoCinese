@@ -63,9 +63,10 @@ Scheduler scheduler;
  * Aggiorna la lettura della luce corrente e controlla che non venga rilevato il palmo della mano.
  * Nel caso in cui lo rilevasse, comincia la lettura del segno.
 */
-void checkInizioMossa(){
+void checkInizioMossa()
+{
    update_currentLight();
-   if(checkPalmo()){
+   if (checkPalmo()) {
      disattiva_inizioMossa();
      print_currentLight();
      readSegno();
@@ -78,14 +79,15 @@ Task inizioMossa(1*TASK_SECOND, TASK_SECOND, checkInizioMossa);
 /**
  * Disattiva il Task predisposto all'inizio di una mossa.
 */
-void disattiva_inizioMossa(){
+void disattiva_inizioMossa() {
   inizioMossa.disable();
 }
 
 /**
  * Funzione che posizione le dita della mano in posizione neutra e fa tornare lo stato dello Scheduler al Task "inizio mossa".
 */
-void backto(){
+void backto()
+{
   torna();
   disattiva_backto();
 }
@@ -95,31 +97,36 @@ Task backto_inizioMossa(1*TASK_SECOND, TASK_SECOND, backto);
 
 /**
  * Funzione che rileva, grazie alla pressione dell'utente di uno dei 3 bottoni preposti, la mossa effettuata segnalandolo all'utente tramite stampa di un messaggio ed il movimento della mano meccanica.
+ * Per assegnare correttamente la codifica è la seguente:
+ * 0 = sasso
+ * 1 = carta
+ * 2 = forbice
 */
-void checkBottoni(){
+void checkBottoni()
+{
   int sasso = digitalRead(pins.bottone_sasso);
   int carta = digitalRead(pins.bottone_carta);
   int forbice = digitalRead(pins.bottone_forbice);
-  if(sasso==1){
+  if(sasso == 1) {
       Serial.println("Hai detto sasso");
       disattiva_selezionaMossa();
       mossa_sasso();
-      mossa=0;
+      mossa = 0; // Assegno il risultato della mossa
       backto_inizioMossa.enableDelayed(5000);
       Serial.println("Guarda la tua mossa");
       print_risultati();
-  }else if(carta==1){
+  }else if(carta == 1) {
       Serial.println("Hai detto carta");
       disattiva_selezionaMossa();
-      mossa=1;
+      mossa = 1;
       backto_inizioMossa.enableDelayed(5000);
       Serial.println("Guarda la tua mossa");
       print_risultati();
-   }else if(forbice==1){
+   }else if(forbice == 1) {
       Serial.println("Hai detto forbice");
       disattiva_selezionaMossa();
       mossa_forbice();
-      mossa=2;
+      mossa = 2;
       backto_inizioMossa.enableDelayed(5000);
       Serial.println("Guarda la tua mossa");
       print_risultati();  
@@ -132,14 +139,14 @@ Task selezionaMossa(1*TASK_SECOND, TASK_SECOND, checkBottoni);
 /**
  * Disattiva il Task predisposto alla selezione di una mossa.
 */
-void disattiva_selezionaMossa(){
+void disattiva_selezionaMossa() {
   selezionaMossa.disable();
 }
 
 /**
  * Disattiva il Task predisposto al ritorno in stato di "inizio mossa" (backto_inizioMossa) ed attiva quello di inizio di una nuova mossa.
 */
-void disattiva_backto(){
+void disattiva_backto() {
   backto_inizioMossa.disable();
   inizioMossa.enable();
   Serial.println("Lettura luce");
@@ -155,7 +162,7 @@ float variazione = 0.1;
 float variazioneDita = 0.05;
 
 
-void setup(){
+void setup() {
     mano.indice.attach(pins.servo_indice); // Lega l'oggetto servo_indice al pin a cui abbiamo collegato il nostro servo, in questo caso il pin 8
     mano.medio.attach(pins.servo_medio);
     mano.anulare.attach(pins.servo_anulare);
@@ -180,14 +187,14 @@ void setup(){
     Serial.println("Lettura luce");
 }
 
-void loop(){
+void loop() {
   scheduler.execute();
 }
 
 /**
  * Inizializza i pin del circuito predisposti agli input.
 */
-void setupPinMode(){
+void setupPinMode() {
   pinMode(pins.bottone_sasso, INPUT);
   pinMode(pins.bottone_carta, INPUT);
   pinMode(pins.bottone_forbice, INPUT);
@@ -200,7 +207,7 @@ void setupPinMode(){
 /**
  * Inizializza la luce "massima", ovvero la luce iniziale letta appena il circuito viene acceso.
 */
-void setup_maxLight(int n){
+void setup_maxLight(int n) {
   for (int i=0; i<n; i++){
     max_light.palmoMano += analogRead(pins.palmoMano);
     max_light.indice += analogRead(pins.indice);
@@ -216,7 +223,7 @@ void setup_maxLight(int n){
 /**
  * Funzione predisposta a far tornare in posizione neutra la mano.
 */
-void torna(){
+void torna() {
     for (pos = 0; pos < 180; pos ++) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
   {
     mano.indice.write(pos);
@@ -231,23 +238,23 @@ void torna(){
 /**
  * Stampa i risultati della mossa effettuata dopo la pressione del bottone e stampa anche i rilevamenti degli stimatori moda e random.
 */
-void print_risultati(){
+void print_risultati() {
   Serial.println();
   Serial.print("Risultati: Mossa effettuata: ");
-  switch (mossa){
+  switch (mossa) {
     case 0: Serial.print("sasso"); break;
     case 1: Serial.print("carta"); break;
     case 2: Serial.print("forbice"); break;
   }
   Serial.println("!");
   Serial.print("Mossa rilevata: ");
-  switch (moda){
+  switch (moda) {
     case 0: Serial.print("sasso"); break;
     case 1: Serial.print("carta"); break;
     case 2: Serial.print("forbice"); break;
   }
   Serial.print(", ");
-  switch (randomize){
+  switch (randomize) {
     case 0: Serial.print("sasso"); break;
     case 1: Serial.print("carta"); break;
     case 2: Serial.print("forbice"); break;
@@ -259,25 +266,25 @@ void print_risultati(){
 /**
  * Rileva la mossa avvalendosi di 5 secondi per farlo correttamente e ne stampa i risultati dei vari stimatori.
 */
-void readSegno(){
+void readSegno() {
   int nonRiconosciuto = 0;
   int carta = 0;
   int sasso = 0;
   int forbice = 0;
   int wait = 5;
   int i = 0;
-  for (;i<wait; i++){
+  for (; i<wait; i++){
     Serial.print("Inizio Gesto: resta con il gesto per ");
-    Serial.println(wait-i);
+    Serial.println(wait - i);
     update_currentLight();
-    if (checkIndice() && checkMedio() && checkPalmo() && checkAnulare()){
-      carta++;
+    if (checkIndice() && checkMedio() && checkPalmo() && checkAnulare()) {
+      carta ++;
     }else if (checkIndice() && checkMedio() && checkPalmo()){
-      forbice++;
-    }else if (checkPalmo()){
-      sasso++;
+      forbice ++;
+    }else if (checkPalmo()) {
+      sasso ++;
     }else{
-      nonRiconosciuto++;
+      nonRiconosciuto ++;
     }
     
     delay(1000); // delay di 1 secondo
@@ -292,49 +299,49 @@ void readSegno(){
 /**
  * Funzione predisposta al controllo della variazione di luce sul palmo della mano.
 */
-bool checkPalmo(){
+bool checkPalmo() {
   return current_light.palmoMano < max_light.palmoMano*(1-variazione);
 }
 
 /**
  * Funzione predisposta al controllo della variazione di luce sul dito indice.
 */
-bool checkIndice(){
+bool checkIndice() {
   return current_light.indice < max_light.indice*(1-variazioneDita);
 }
 
 /**
  * Funzione predisposta al controllo della variazione di luce sul dito medio.
 */
-bool checkMedio(){
+bool checkMedio() {
   return current_light.medio < max_light.medio*(1-variazioneDita);
 }
 
 /**
  * Funzione predisposta al controllo della variazione di luce sul dito anulare.
 */
-bool checkAnulare(){
+bool checkAnulare() {
   return current_light.anulare < max_light.anulare*(1-variazioneDita);
 }
 
 /**
  * Stabilisce il segno effettuato dall'utente confrontando il massimo tra i valori che possono essere rilevati (non riconosciuto, carta, forbice e sasso) e lo stampa.
 */
-int checkSegno_moda(int nonRiconosciuto, int carta, int sasso, int forbice){
+int checkSegno_moda(int nonRiconosciuto, int carta, int sasso, int forbice) {
   int countMax= (max(max(max(nonRiconosciuto, carta), sasso), forbice));
   if (countMax = nonRiconosciuto) {
     Serial.print("Segno non riconosciuto ma a caso dico ");
     return checkSegno_random();
   }
-  if (countMax = carta){
+  if (countMax = carta) {
     Serial.println("Carta!");
     return 1;
   }
-  if (countMax = sasso){
+  if (countMax = sasso) {
     Serial.println("Sasso!");
     return 0;
   }
-  if (countMax = forbice){
+  if (countMax = forbice) {
     Serial.println("Forbice!");
     return 2;
   }
@@ -343,9 +350,9 @@ int checkSegno_moda(int nonRiconosciuto, int carta, int sasso, int forbice){
 /**
  * Stabilisce randomicamente un segno fra i 3 possibili e lo stampa.
 */
-int checkSegno_random(){
+int checkSegno_random() {
   long randomSegno = random(3);
-  switch (randomSegno){
+  switch (randomSegno) {
       case 0: Serial.println("Sasso!"); return 0;
       case 1: Serial.println("Carta!"); return 1;
       case 2: Serial.println("Forbice!"); return 2;
@@ -355,7 +362,7 @@ int checkSegno_random(){
 /**
  * Aggiorna i valori riguardanti la luce letta al momento.
 */
-void update_currentLight(){
+void update_currentLight() {
   current_light.palmoMano = analogRead(pins.palmoMano);
   current_light.indice = analogRead(pins.indice);
   current_light.medio = analogRead(pins.medio);
@@ -365,8 +372,9 @@ void update_currentLight(){
 /**
  * Stampa i valori correnti della luce letta per il palmo della mano e le 3 dita interessate (indice, medio ed anulare).
 */
-void print_currentLight(){
+void print_currentLight() {
     update_currentLight();
+
     Serial.print("palmoMano: ");
     Serial.println(current_light.palmoMano);
     Serial.print("indice: ");
@@ -383,7 +391,7 @@ void print_currentLight(){
 /**
  * Stampa i valori massimi della luce letta per il palmo della mano e le 3 dita interessate (indice, medio ed anulare).
 */
-void print_maxLight(){
+void print_maxLight() {
   Serial.print("Max Luce palmo mano: ");
     Serial.println(max_light.palmoMano);
   Serial.print("Max Luce indice: ");
@@ -411,7 +419,7 @@ void mossa_forbice() {
  * Sposta, in gradi, le alette dei servo-motori in modo tale da far muovere la mano e ricreare la mossa del sasso.
 */
 void mossa_sasso() {
-  for (pos = 180; pos >= 1; pos -= 1) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
+  for (pos = 180; pos >= 1; pos --) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
   {
     mano.indice.write(pos);
     mano.medio.write(pos);
