@@ -76,7 +76,7 @@ int carta = digitalRead(pins.bottone_carta);
 int forbice = digitalRead(pins.bottone_forbice);
 ```
 
-In seguito a ciò, i motori (che hanno un raggio movimento da 0 180 gradi) che controllano le dita della mano meccanica vengono mossi per riprodurre la scelta dell'utente, per poi ritornare in posizione *neutra* e attendere una nuova mossa.  
+Dopo la pressione del bottone, i motori (che hanno un raggio movimento da 0 180 gradi) che controllano le dita della mano meccanica vengono mossi per riprodurre la scelta dell'utente, per poi ritornare in posizione *neutra* e attendere una nuova mossa.  
 Prendiamo, per esempio, la mossa della forbice:
 
 ![Schema_collegamento](/documentation/Collegamento_servi.jpeg)
