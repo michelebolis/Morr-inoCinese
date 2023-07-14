@@ -51,7 +51,7 @@ mano_servo mano;
 light_detected max_light;
 light_detected current_light;
 
-/** Risultati 
+/*  Risultati 
   Codifica:
     0 = sasso
     1 = carta
@@ -64,48 +64,115 @@ int mossa;
 /** Nuovo oggetto Scheduler istanziato per i Task che comporranno il circuito */
 Scheduler scheduler;
 
+const float secondi_countdown = 5;
+int secondi_rimasti=secondi_countdown;
+void print_countdown(){
+  if(secondi_rimasti==0){disable_countdown();}
+  else{
+    Serial.print("Inizio Gesto: resta con il gesto per "); Serial.println(secondi_rimasti);
+    secondi_rimasti--;
+  }
+}
+
+Task countdown(1*TASK_SECOND, TASK_SECOND, print_countdown);
+
+void disable_countdown(){
+  secondi_rimasti=secondi_countdown;
+  countdown.disable();
+}
+
+const float taglia_campione = 10;
+int rilevazioni_rimaste = taglia_campione;
+int nonRiconosciuto;
+int carta;
+int sasso;
+int forbice;
+
+/**
+ * Rileva la mossa avvalendosi di 5 secondi_countdown per farlo correttamente e ne stampa i risultati dei vari stimatori.
+*/
+void readSegno() {
+  if(rilevazioni_rimaste>0){
+    update_currentLight();
+    if (checkIndice() && checkMedio() && checkPalmo() && checkAnulare()) {
+      carta ++;
+    }else if (checkIndice() && checkMedio() && checkPalmo()){
+      forbice ++;
+    }else if (checkPalmo()) {
+      sasso ++;
+    }else{
+      nonRiconosciuto ++;
+    }
+    rilevazioni_rimaste--;
+  }else{
+    Serial.println();
+    Serial.print("Lo stimatore moda dice: ");
+    moda = checkSegno_moda(nonRiconosciuto, carta, sasso, forbice);
+    Serial.print("Lo stimatore random dice: ");
+    randomize = checkSegno_random();
+
+    Serial.println();
+    Serial.println("Premi il buttone corrispondente alla mossa che hai effettuato");
+    disable_sampling();
+    enable_idle_waitButton();
+  }
+}
+
+const float adjustment = secondi_countdown/taglia_campione;
+Task sampling(adjustment*TASK_SECOND, TASK_SECOND, readSegno);
+
+void disable_sampling(){
+  rilevazioni_rimaste=taglia_campione;
+  nonRiconosciuto=0;
+  carta=0;
+  sasso=0;
+  forbice=0;
+  sampling.disable();
+}
+
 /**
  * Aggiorna la lettura della luce corrente e controlla che non venga rilevato il palmo della mano.
  * Nel caso in cui lo rilevasse, comincia la lettura del segno.
 */
-void checkInizioMossa()
+void checkidle_waitMossa()
 {
    update_currentLight();
    if (checkPalmo()) {
-     disattiva_inizioMossa();
+     disable_idle_waitMossa();
      print_currentLight();
-     readSegno();
+     countdown.enable();
+     sampling.enable();
    };
 }
 
 /** Task iniziale di inizio mossa */
-Task inizioMossa(1*TASK_SECOND, TASK_SECOND, checkInizioMossa);
+Task idle_waitMossa(1*TASK_SECOND, TASK_SECOND, checkidle_waitMossa);
 
 /**
- * Disattiva il Task predisposto all'inizio di una mossa.
+ * disable il Task predisposto all'inizio di una mossa.
 */
-void disattiva_inizioMossa() {
-  inizioMossa.disable();
+void disable_idle_waitMossa() {
+  idle_waitMossa.disable();
 }
 
 /**
  * Funzione che posizione le dita della mano in posizione neutra e fa servo_defaultPositionre lo stato dello Scheduler al Task "inizio mossa".
 */
-void backto()
+void restart()
 {
   if(mossa!=1){
     servo_defaultPosition();
   }
-  disattiva_backto();
+  disable_restart();
 }
 
 /** Task di ritorno allo stato di inizio mossa */
-Task backto_inizioMossa(1*TASK_SECOND, TASK_SECOND, backto);
+Task restart_idle_waitMossa(1*TASK_SECOND, TASK_SECOND, restart);
 
 /**
  * Funzione che rileva, grazie alla pressione dell'utente di uno dei 3 bottoni preposti, la mossa effettuata segnalandolo all'utente tramite stampa di un messaggio ed il movimento della mano meccanica.
 */
-void checkBottoni()
+void checkButtons()
 {
   int sasso = digitalRead(pins.bottone_sasso);
   int carta = digitalRead(pins.bottone_carta);
@@ -115,47 +182,46 @@ void checkBottoni()
   }
   if(sasso == 1) {
     Serial.println("Hai detto sasso");
-    disattiva_selezionaMossa();
+    disable_idle_waitButton();
     servo_sassoPosition();
     mossa = 0; // Assegno il risultato della mossa
   }else if(carta == 1) {
     Serial.println("Hai detto carta");
-    disattiva_selezionaMossa();
+    disable_idle_waitButton();
     mossa = 1;
   }else if(forbice == 1) {
     Serial.println("Hai detto forbice");
-    disattiva_selezionaMossa();
+    disable_idle_waitButton();
     servo_forbicePosition();
     mossa = 2; 
   }
-  backto_inizioMossa.enableDelayed(5000);
+  restart_idle_waitMossa.enableDelayed(5000);
   Serial.println("Guarda la tua mossa");
   print_risultati();
 }
 
 /** Task per la mossa da selezionare */
-Task selezionaMossa(1*TASK_SECOND, TASK_SECOND, checkBottoni);
+Task idle_waitButton(1*TASK_SECOND, TASK_SECOND, checkButtons);
 
 /**
- * Disattiva il Task predisposto alla selezione di una mossa.
+ * disable il Task predisposto alla selezione di una mossa.
 */
-void disattiva_selezionaMossa() {
-  selezionaMossa.disable();
+void disable_idle_waitButton() {
+  idle_waitButton.disable();
+}
+
+void enable_idle_waitButton(){
+  idle_waitButton.enable();
 }
 
 /**
- * Disattiva il Task predisposto al ritorno in stato di "inizio mossa" (backto_inizioMossa) ed attiva quello di inizio di una nuova mossa.
+ * disable il Task predisposto al ritorno in stato di "inizio mossa" (restart_idle_waitMossa) ed attiva quello di inizio di una nuova mossa.
 */
-void disattiva_backto() {
-  backto_inizioMossa.disable();
-  inizioMossa.enable();
+void disable_restart() {
+  restart_idle_waitMossa.disable();
+  idle_waitMossa.enable();
   Serial.println("Lettura luce");
 }
-
-
-/** Variabile di tipo intero il cui valore sarà la posizione, in gradi, da impartire al servo */
-int pos = 0;
-
 
 /** Variabili di tipo float necessarie per il calcolo più accurato dei valori riguardanti la luce rilevata durante l'esecuzione di una mossa */
 float variazione = 0.1;
@@ -219,21 +285,23 @@ void setup_maxLight(int n) {
 
 
 /*
-  Funzione che inizializza lo scheduler e aggiunge i relativi Task, attivando solo quello di inizioMossa
+  Funzione che inizializza lo scheduler e aggiunge i relativi Task, attivando solo quello di idle_waitMossa
 */
 void setup_scheduler(){
   scheduler.init();
-  scheduler.addTask(inizioMossa);
-  scheduler.addTask(selezionaMossa);
-  scheduler.addTask(backto_inizioMossa);
-  inizioMossa.enable(); 
+  scheduler.addTask(idle_waitMossa);
+  scheduler.addTask(idle_waitButton);
+  scheduler.addTask(restart_idle_waitMossa);
+  scheduler.addTask(countdown);
+  scheduler.addTask(sampling);
+  idle_waitMossa.enable(); 
 }
 
 /**
  * Funzione predisposta a far servo_defaultPositionre in posizione neutra la mano.
 */
 void servo_defaultPosition() {
-  for (pos = 0; pos < 180; pos ++) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
+  for (int pos = 0; pos < 180; pos ++) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
   {
     mano.indice.write(pos);
     mano.medio.write(pos);
@@ -270,39 +338,6 @@ void print_mossa(int mossa){
     case 2: Serial.print("forbice"); break;
     default: Serial.print("ERRORE");
   }
-}
-
-/**
- * Rileva la mossa avvalendosi di 5 secondi per farlo correttamente e ne stampa i risultati dei vari stimatori.
-*/
-void readSegno() {
-  int nonRiconosciuto = 0;
-  int carta = 0;
-  int sasso = 0;
-  int forbice = 0;
-  int wait = 5;
-  int i = 0;
-  for (; i<wait; i++){
-    Serial.print("Inizio Gesto: resta con il gesto per ");
-    Serial.println(wait - i);
-    update_currentLight();
-    if (checkIndice() && checkMedio() && checkPalmo() && checkAnulare()) {
-      carta ++;
-    }else if (checkIndice() && checkMedio() && checkPalmo()){
-      forbice ++;
-    }else if (checkPalmo()) {
-      sasso ++;
-    }else{
-      nonRiconosciuto ++;
-    }
-    
-    delay(1000); // delay di 1 secondo
-  }
-  Serial.print("Lo stimatore moda dice: ");
-  moda = checkSegno_moda(nonRiconosciuto, carta, sasso, forbice);
-  Serial.print("Lo stimatore random dice: ");
-  randomize = checkSegno_random();
-  selezionaMossa.enable();
 }
 
 /**
@@ -415,7 +450,7 @@ void print_maxLight() {
  * Sposta, in gradi, le alette dei servo-motori in modo tale da far muovere la mano e ricreare la mossa della forbice.
 */
 void servo_forbicePosition() {
-  for (pos = 180; pos >= 1; pos --) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
+  for (int pos = 180; pos >= 1; pos --) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
   {
     mano.pollice.write(pos);
     mano.anulare.write(pos);
@@ -428,7 +463,7 @@ void servo_forbicePosition() {
  * Sposta, in gradi, le alette dei servo-motori in modo tale da far muovere la mano e ricreare la mossa del sasso.
 */
 void servo_sassoPosition() {
-  for (pos = 180; pos >= 1; pos --) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
+  for (int pos = 180; pos >= 1; pos --) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
   {
     mano.indice.write(pos);
     mano.medio.write(pos);
