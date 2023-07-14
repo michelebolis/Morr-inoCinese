@@ -2,7 +2,8 @@
 
 Autori: Michele Bolis e Andrea Galliano  
 
-Descrizione: il nostro progetto consiste nel campionamento dei segni della morra cinese mediante l'utilizzo di fotoresistenze e, a seguito di ciò, la riproduzione della mossa attraverso il movimento delle dita della mano meccanica. Tale movimento viene attuato mediante l'utilizzo di un servomotore per ogni dito.
+Descrizione: il nostro progetto consiste nel campionamento dei segni della morra cinese mediante l'utilizzo di fotoresistenze e, a seguito di ciò, la riproduzione della mossa attraverso il movimento delle dita della mano meccanica. Tale movimento viene attuato mediante l'utilizzo di un servomotore per ogni dito.  
+I dati relativi ai rilevamenti delle mosse vengono poi analizzati facendo delle stime statistiche.
 
 Componenti principali:
 
