@@ -19,7 +19,8 @@ Lo stimatore random dice: Carta!
 Hai detto sasso
 Guarda la tua mossa
 
-Risultati: Mossa effettuata: sasso!
+Risultati:
+Mossa effettuata: sasso!
 Mossa rilevata: sasso, carta!
 Lettura luce
 =~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.09 09:04:57 =~=~=~=~=~=~=~=~=~=~=~=
@@ -43,7 +44,8 @@ Lo stimatore random dice: Carta!
 Hai detto carta
 Guarda la tua mossa
 
-Risultati: Mossa effettuata: carta!
+Risultati: 
+Mossa effettuata: carta!
 Mossa rilevata: sasso, carta!
 
 Lettura luce
@@ -62,7 +64,14 @@ Lo stimatore random dice: Carta!
 Hai detto forbice
 Guarda la tua mossa
 
-Risultati: Mossa effettuata: forbice!
+Risultati:
+Mossa effettuata: forbice!
 Mossa rilevata: forbice, carta!
 
+Lettura luce
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.14 13:02:38 =~=~=~=~=~=~=~=~=~=~=~=
+LettMax Luce palmo mano: 288
+Max Luce indice: 279
+Max Luce medio: 178
+Max Luce anulare: 207
 Lettura luce

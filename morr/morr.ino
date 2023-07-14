@@ -317,7 +317,8 @@ void servo_defaultPosition() {
 */
 void print_risultati() {
   Serial.println();
-  Serial.print("Risultati: Mossa effettuata: ");
+  Serial.println("Risultati:");
+  Serial.print("Mossa effettuata: ");
   print_mossa(mossa);
   Serial.println("!");
   Serial.print("Mossa rilevata: ");
