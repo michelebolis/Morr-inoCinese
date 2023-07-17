@@ -1,19 +1,11 @@
 # Morr-inoCinese
 
+Progetto per il corso di Sistemi Embedded 2022-2023  
 Autori: Michele Bolis e Andrea Galliano  
 
 Descrizione: il nostro progetto consiste nel campionamento dei segni della morra cinese mediante l'utilizzo di fotoresistenze e, a seguito di ciò, la riproduzione della mossa attraverso il movimento delle dita della mano meccanica. Tale movimento viene attuato mediante l'utilizzo di un servomotore per ogni dito.  
-I dati relativi ai rilevamenti delle mosse vengono poi analizzati facendo delle stime statistiche.
+I dati relativi ai rilevamenti delle mosse vengono poi analizzati per verificare la correttezza degli stimatori della mossa.
 
-Componenti principali:
-
-- ELEGOO UNO R3
-- Fotoresistenze
-- Servomotori  
-- Mano "artigianale"
-
-Repository: <https://github.com/michelebolis/Morr-inoCinese>  
+La documentazione completa è consultabile in [documentazione](documentation/documentazione.md).
 
 Licenza: GNU General Public License v3.0  
-
-Data _indicativa_ del progetto: fine luglio 2023
