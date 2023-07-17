@@ -5,10 +5,12 @@
 - [DOCUMENTAZIONE MORR-INO CINESE - Michele Bolis \& Andrea Galliano](#documentazione-morr-ino-cinese---michele-bolis--andrea-galliano)
   - [Indice](#indice)
     - [Descrizione del progetto](#descrizione-del-progetto)
-    - [Materiali utilizzati](#materiali-utilizzati)
+    - [Materiali e componenti utilizzati](#materiali-e-componenti-utilizzati)
     - [Funzionamento dettagliato](#funzionamento-dettagliato)
       - [Rilevamento della mossa](#rilevamento-della-mossa)
       - [Feedback e traduzione della mossa](#feedback-e-traduzione-della-mossa)
+        - [Selezione della mossa corretta](#selezione-della-mossa-corretta)
+        - [Riproduzione della mossa](#riproduzione-della-mossa)
     - [Dettagli implementativi: Task Scheduler](#dettagli-implementativi-task-scheduler)
     - [Analisi statistica](#analisi-statistica)
     - [Demo di funzionamento](#demo-di-funzionamento)
@@ -19,32 +21,29 @@ Il progetto prevede il rilevamento di una mossa del gioco della __*morra cinese*
 
 Grazie al feedback dell'utente sulla mossa che ha effettuato, è stato possibile analizzare l'accuratezza dei classificatori utilizzati per predire la mossa effettuata.
 
-### Materiali utilizzati
+### Materiali e componenti utilizzati
 
-I materiali utilizzati per la realizzazione del progetto sono diversi e comprendono sia i __componenti elettronici__ (come ad esempio i sensori e gli attuatori) sia i __componenti non elettronici__ (è il caso dei materiali usati per la realizzazione della mano meccanica *artigianale*).  
+I materiali utilizzati per la realizzazione del progetto sono diversi e comprendono sia i __componenti elettronici__ sia i __componenti non elettronici__ (è il caso dei materiali usati per la realizzazione della mano meccanica *artigianale*).  
 
-**COMPONENTI ELETTRONICI**:
-
-- ELEGOO UNO R3
-- 4 fotoresistenze (per il palmo della mano, per il rilevamento dell'indice, del medio e dell'anulare)
-- 5 servomotori (uno per ogni dito della mano da muovere)
-- 3 breadboard da 830 contatti
-- 7 resistenze da 10k Ohm
-- Cavi e jumper  
-
-**COMPONENTI NON ELETTRONICI**:
-
-- Cartoncino  
-- Foglio in gomma (dello spessore di mezzo *cm* circa)
-- Cannucce in plastica e carta
-- Filo di cotone
+- __Componenti elettronici__:
+  - ELEGOO UNO R3
+  - 4 fotoresistenze (per il palmo della mano, per il rilevamento dell'indice, del medio e dell'anulare)
+  - 5 servomotori (uno per ogni dito della mano da muovere)
+  - 3 breadboard da 830 contatti
+  - 7 resistenze da 10k Ohm
+  - Cavi e jumper  
+- __Componenti non elettronici__:
+  - Cartoncino  
+  - Foglio in gomma (dello spessore di mezzo *cm* circa)
+  - Cannucce in plastica e carta
+  - Filo di cotone
 
 ### Funzionamento dettagliato
 
-Il funzionamento dettagliato del progetto si può dividere in 3 porzioni ben definite:  
+Il funzionamento dettagliato del progetto si può dividere in 2 porzioni ben definite:  
 
-1. Rilevamento della mossa
-2. Feedback e traduzione della mossa
+1. [Rilevamento della mossa](#rilevamento-della-mossa)
+2. [Feedback e traduzione della mossa](#feedback-e-traduzione-della-mossa)
 
 #### Rilevamento della mossa
 
@@ -85,8 +84,10 @@ A seguito della previsione di ciascuno stimatore, le mosse predette vengono stam
 
 La fase di traduzione della mossa è possibile dividerla ulteriormente in altre 2 sotto-fasi:  
 
-1. Selezione della mossa corretta tramite bottone
-2. Riproduzione della mossa grazie alla mano meccanica  
+1. [Selezione della mossa corretta](#selezione-della-mossa-corretta)
+2. [Riproduzione della mossa](#riproduzione-della-mossa)  
+
+##### Selezione della mossa corretta
 
 In seguito alla stampa a video dei risultati degli stimatori, l'utente deve tener premuto uno dei 3 bottoni disponibili per segnalare la mossa che aveva effettuato.
 
@@ -95,6 +96,8 @@ int sasso = digitalRead(pins.bottone_sasso);
 int carta = digitalRead(pins.bottone_carta);
 int forbice = digitalRead(pins.bottone_forbice);
 ```
+
+##### Riproduzione della mossa
 
 Dopo la pressione del bottone, i servomotori di controllo delle dita della mano vengono mossi per riprodurre la scelta dell'utente, per poi ritornare in posizione *neutra* e attendere una nuova mossa.  
 
