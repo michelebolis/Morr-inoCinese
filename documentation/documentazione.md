@@ -124,18 +124,18 @@ Tutti i task sono stati istanziati basandosi sul __flusso di esecuzione__ del *s
 
 - Flusso di esecuzione del *setup*:
 
-![setup path](/documentation/setup_path.png)
+![setup path](/documentation/img/setup_path.png)
 
 NB: come misura di sicurezza per i servomotori, li facciamo muovere fino al raggiungimento della loro posizione di default nel caso in cui si sia interrotta la corrente mentre si stavano muovendo.  
 
 - Flusso di esecuzione del *loop*:
 
-![loop path](/documentation/execution_path.png)  
+![loop path](/documentation/img/execution_path.png)  
 Nel loop vengono eseguite solo il loop dello scheduler in cui ci saranno dei task attivi.
 
 - Flusso dello scheduler
 
-![scheduler path](/documentation/scheduler_path.png)
+![scheduler path](/documentation/img/scheduler_path.png)
 
 Lo scheduler, come si puo notare, è usato principalmente con un solo task attivo alla volta tranne dopoil campionamento.  
 
