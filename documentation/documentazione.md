@@ -118,6 +118,7 @@ Il codice completo relativo all'intero progetto è consultabile [qui](../morr/mo
 ### Dettagli implementativi: Task Scheduler
 
 Per evitare l'utilizzo di delay e sfruttare il multitasking, è stata utilizzata la libreria __<TaskScheduler.h>__, la cui documentazione è consultabile dall'apposita [repository](https://github.com/arkhipenko/TaskScheduler).  
+
 Grazie a questa libreria, è possibile istanziare un oggetto __*Scheduler*__, che permette la creazione di più task evitando di utilizzare la funzione __*delay()*__, che causerebbe un __blocco totale di tutti i processi__.  
 Tutti i task sono stati istanziati basandosi sul __flusso di esecuzione__ del *setup* e sul __flusso di esecuzione__ del *loop*.  
 
@@ -135,6 +136,12 @@ Nel loop vengono eseguite solo il loop dello scheduler in cui ci saranno dei tas
 - Flusso dello scheduler
 
 ![scheduler path](/documentation/scheduler_path.png)
+
+Lo scheduler, come si puo notare, è usato principalmente con un solo task attivo alla volta tranne dopoil campionamento.  
+
+Grazie al task scheduler, è stato possibile separare il countdown visibile a schermo dal campionamento. In questo modo è stato possibile aumentare il numero di letture restando sempre nello stesso lasso di tempo del countdown, aumentando cosi la velocità di campionamento.  
+
+Infine notiamo l'utilizzo dell'attivazione di un task (restart_idle_waitMossa) rimandato di 5 secondi cosicchè si potesse vedere la mossa effettuata dalla mano meccanica prima di farla tornare nella posizione di default.
 
 ### Analisi statistica
 
