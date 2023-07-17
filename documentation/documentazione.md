@@ -4,24 +4,26 @@
 
 - [DOCUMENTAZIONE MORR-INO CINESE - Michele Bolis \& Andrea Galliano](#documentazione-morr-ino-cinese---michele-bolis--andrea-galliano)
   - [Indice](#indice)
-    - [Descrizione del progetto](#descrizione-del-progetto)
-    - [Materiali e componenti utilizzati](#materiali-e-componenti-utilizzati)
-    - [Funzionamento dettagliato](#funzionamento-dettagliato)
-      - [Rilevamento della mossa](#rilevamento-della-mossa)
-      - [Feedback e traduzione della mossa](#feedback-e-traduzione-della-mossa)
-        - [Selezione della mossa corretta](#selezione-della-mossa-corretta)
-        - [Riproduzione della mossa](#riproduzione-della-mossa)
-    - [Dettagli implementativi: Task Scheduler](#dettagli-implementativi-task-scheduler)
-    - [Analisi statistica](#analisi-statistica)
-    - [Demo di funzionamento](#demo-di-funzionamento)
+  - [Descrizione del progetto](#descrizione-del-progetto)
+  - [Materiali e componenti utilizzati](#materiali-e-componenti-utilizzati)
+  - [Funzionamento dettagliato](#funzionamento-dettagliato)
+    - [Rilevamento della mossa](#rilevamento-della-mossa)
+    - [Feedback e traduzione della mossa](#feedback-e-traduzione-della-mossa)
+      - [Selezione della mossa corretta](#selezione-della-mossa-corretta)
+      - [Riproduzione della mossa](#riproduzione-della-mossa)
+  - [Dettagli implementativi](#dettagli-implementativi)
+    - [Task Scheduler](#task-scheduler)
+    - [Schema circuito e schema elettrico](#schema-circuito-e-schema-elettrico)
+  - [Analisi statistica](#analisi-statistica)
+  - [Demo di funzionamento](#demo-di-funzionamento)
 
-### Descrizione del progetto
+## Descrizione del progetto
 
 Il progetto prevede il rilevamento di una mossa del gioco della __*morra cinese*__, riprodotta con la propria mano, con conseguente stima di quest'ultima da parte di diversi classificatori. L'utente dovrà poi confermare la mossa effettuata attraverso tre pulsanti. Infine la mossa verrà *"tradotta"* da una mano meccanica.
 
 Grazie al feedback dell'utente sulla mossa che ha effettuato, è stato possibile analizzare l'accuratezza dei classificatori utilizzati per predire la mossa effettuata.
 
-### Materiali e componenti utilizzati
+## Materiali e componenti utilizzati
 
 I materiali utilizzati per la realizzazione del progetto sono diversi e comprendono sia i __componenti elettronici__ sia i __componenti non elettronici__ (è il caso dei materiali usati per la realizzazione della mano meccanica *artigianale*).  
 
@@ -38,14 +40,14 @@ I materiali utilizzati per la realizzazione del progetto sono diversi e comprend
   - Cannucce in plastica e carta
   - Filo di cotone
 
-### Funzionamento dettagliato
+## Funzionamento dettagliato
 
 Il funzionamento dettagliato del progetto si può dividere in 2 porzioni ben definite:  
 
 1. [Rilevamento della mossa](#rilevamento-della-mossa)
 2. [Feedback e traduzione della mossa](#feedback-e-traduzione-della-mossa)
 
-#### Rilevamento della mossa
+### Rilevamento della mossa
 
 La parte relativa al rilevamento di una mossa prevede l'utilizzo di __4 fotoresistenze__, poste in modo tale da percepire 4 punti fondamentali quando si intende effettuare una mossa:
 
@@ -54,9 +56,19 @@ La parte relativa al rilevamento di una mossa prevede l'utilizzo di __4 fotoresi
 - Il medio
 - L'anulare  
 
-Durante la fase di setup, in cui si presuppone che non ci siano "ostacoli" tra le fotoresistenze e la luce, vengono settate i valori massimi che le fotoresistenze possono rilevare (per aumentare l'accuratezza della stima, questa è risultate dalla media di 20 rilevazioni).  
+Durante la fase di setup, in cui si presuppone che non ci siano "ostacoli" tra le fotoresistenze e la luce, vengono settate i __valori massimi__ che le fotoresistenze possono rilevare (per aumentare l'accuratezza della stima, questa è risultate dalla media di 20 rilevazioni).  
 
-Per rilevare SE è presente o meno un dito su una fotoresistenza, applichiamo una diminuzione (5%-10%) alla luce massima rilevata e SE la luce rilevata attualente è minore, allora si considera tale fotoresistenza "occupata".  
+Per rilevare SE è presente o meno un dito su una fotoresistenza, applichiamo una diminuzione (5%-10%) alla luce massima rilevata e SE la luce rilevata attualente è minore, allora si considera tale fotoresistenza "coperta".  
+
+Conteggio delle mosse rilevate:
+
+- Una mossa è sasso SE solo la fotoresistenza del __palmo della mano__ è coperta.
+- Una mossa è forbice SE sono coperte le fotoresistenza del __palmo__, dell'__indice__ e del __medio__.
+- Una mossa è carta SE tutte le fotoresistenza risultano coperte, quindi __palmo__, __indice__, __medio__ e __anulare__.
+- In tutti gli altri casi la mossa è considerata non riconosciuta.
+
+La rilevazione della mossa effettiva inizia quando la fotoresistenza del palmo della mano risulta coperta, in quanto essa è comune a tutte le mosse. Il campionamento avviene in 5 secondi, in cui è richiesto mantenere la mossa.
+
 Chiaramente se la luce ambientale cambiasse, sia nel caso in cui aumenti la luce (non si rileverebbe quasi mai una mossa) sia nel caso in cui diminuisca (si rileverebbe quasi sempre carta), sarebbe necessario un riavvio per rilevare la nuova luce massima.  
 
 I diversi classificatori, date in input il numero di rilevazioni per mossa, restituiscono in output la codifica della mossa, in particolare:  
@@ -72,22 +84,24 @@ Gli stimatori proposti sono:
   int countMax= (max(max(max(nonRiconosciuto, carta), sasso), forbice));
 ```
 
-- Lo __stimatore random__ emette la mossa scegliendo in maniera pseudo-casuale 1 delle 3 disponibili.
+- Lo __stimatore random__ emette la mossa scegliendo in maniera pseudo-casuale 1 delle 3 disponibili, ignorando quindi i campionamenti effettuati.
 
 ```C++
 long randomSegno = random(3);
 ```
 
-A seguito della previsione di ciascuno stimatore, le mosse predette vengono stampate in output sulla console.
+A seguito della previsione di ciascuno stimatore, le mosse predette vengono stampate in output sulla console.  
 
-#### Feedback e traduzione della mossa
+NB: nel caso dello stimatore moda SE il segno nonRiconosciuto ha frequenza maggiore, si utilizza lo stimatore random per avere comunque una mossa stimata e non avere degli NA nel dataset.
+
+### Feedback e traduzione della mossa
 
 La fase di traduzione della mossa è possibile dividerla ulteriormente in altre 2 sotto-fasi:  
 
 1. [Selezione della mossa corretta](#selezione-della-mossa-corretta)
 2. [Riproduzione della mossa](#riproduzione-della-mossa)  
 
-##### Selezione della mossa corretta
+#### Selezione della mossa corretta
 
 In seguito alla stampa a video dei risultati degli stimatori, l'utente deve tener premuto uno dei 3 bottoni disponibili per segnalare la mossa che aveva effettuato.
 
@@ -97,7 +111,7 @@ int carta = digitalRead(pins.bottone_carta);
 int forbice = digitalRead(pins.bottone_forbice);
 ```
 
-##### Riproduzione della mossa
+#### Riproduzione della mossa
 
 Dopo la pressione del bottone, i servomotori di controllo delle dita della mano vengono mossi per riprodurre la scelta dell'utente, per poi ritornare in posizione *neutra* e attendere una nuova mossa.  
 
@@ -116,9 +130,9 @@ void servo_forbicePosition() {
 
 Infine viene stampato un riassunto contenente la mossa che si è effettuata con le relative mosse predette dagli stimatori. Ora ricomincia tutto dalla lettura della luce per il rilevamento della mossa.
 
-Il codice completo relativo all'intero progetto è consultabile [qui](../morr/morr.ino).
+## Dettagli implementativi
 
-### Dettagli implementativi: Task Scheduler
+### Task Scheduler
 
 Per evitare l'utilizzo di delay e sfruttare il multitasking, è stata utilizzata la libreria __<TaskScheduler.h>__, la cui documentazione è consultabile dall'apposita [repository](https://github.com/arkhipenko/TaskScheduler).  
 
@@ -146,7 +160,16 @@ Grazie al task scheduler, è stato possibile separare il countdown visibile a sc
 
 Infine notiamo l'utilizzo dell'attivazione di un task (restart_idle_waitMossa) rimandato di 5 secondi cosicchè si potesse vedere la mossa effettuata dalla mano meccanica prima di farla tornare nella posizione di default.
 
-### Analisi statistica
+### Schema circuito e schema elettrico
+
+Lo schema circuitale del progetto è consultabile attraverso una sua riproduzione in un progetto di [TinkerCard](https://www.tinkercad.com/things/2YdawX71xvz).  
+Qui di seguito un suo screenshot:  
+[aggiungere screen](#schema-circuito-e-schema-elettrico)
+
+Lo schema elettrico invece è consultabile [qui](#schema-circuito-e-schema-elettrico).  
+Qui di seguito un suo screenshot:  
+
+## Analisi statistica
 
 La terza ed ultima parte riguarda l'analisi statistica sui risultati emessi, atta a valutare la bontà degli stimatori scelti.  
 I dati, stampati sulla porta seriale, vengono prelevati e inseriti all'interno di un [file di testo](../Statistiche/log.txt) grazie a [PuTTY](https://www.putty.org/), un particolare tipo di __Client__ che permette di accedere da remoto a sistemi informatici selezionando il tipo di connessione desiderata (nel nostro caso la connessione __*serial*__).  
@@ -171,4 +194,4 @@ $$Specificità = {VN \over TN} $$
 
 Dal punto di vista grafico, rappresentiamo la matrice di confusione con una __mappa di calore__ per evidenziare eventuali concentrazioni di errori.
 
-### Demo di funzionamento
+## Demo di funzionamento
