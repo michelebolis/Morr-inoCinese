@@ -4,8 +4,7 @@
 /**
  * Struttura della mano meccanica le cui dita vengono mosse tramite appositi Servo-Motori
 */
-struct mano_servo
-{
+struct mano_servo{
     Servo pollice;
     Servo indice;
     Servo medio;
@@ -16,8 +15,7 @@ struct mano_servo
 /**
  * Struttura di interi che rappresenta la luce letta in 4 punti: il palmo della mano, il dito indice, il medio e l'anulare.
 */
-struct light_detected
-{
+struct light_detected{
     int palmoMano;
     int indice;
     int medio;
@@ -27,8 +25,7 @@ struct light_detected
 /**
  * Struttura di costanti intere rappresentati i pin della board adibiti al funzionamento dell'intero circuito.
 */
-struct pin_list 
-{
+struct pin_list {
     const int palmoMano = A4;
     const int indice = A3;
     const int medio = A2;
