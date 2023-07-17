@@ -1,8 +1,8 @@
-# DOCUMENTAZIONE MORR-INO CINESE - Michele Bolis & Andrea Galliano
+# Documentazione completa Morr-inoCinese - Michele Bolis & Andrea Galliano
 
 ## Indice
 
-- [DOCUMENTAZIONE MORR-INO CINESE - Michele Bolis \& Andrea Galliano](#documentazione-morr-ino-cinese---michele-bolis--andrea-galliano)
+- [Documentazione completa Morr-inoCinese - Michele Bolis \& Andrea Galliano](#documentazione-completa-morr-inocinese---michele-bolis--andrea-galliano)
   - [Indice](#indice)
   - [Descrizione del progetto](#descrizione-del-progetto)
   - [Materiali e componenti utilizzati](#materiali-e-componenti-utilizzati)
