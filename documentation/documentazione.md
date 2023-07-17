@@ -117,19 +117,22 @@ Il codice completo relativo all'intero progetto è consultabile [qui](../morr/mo
 
 ### Dettagli implementativi: Task Scheduler
 
-Per evitare l'utilizzo di delay, è stata utilizzata la libreria __<TaskScheduler.h>__, la cui documentazione è consultabile [qui](https://github.com/arkhipenko/TaskScheduler).  
+Per evitare l'utilizzo di delay e sfruttare il multitasking, è stata utilizzata la libreria __<TaskScheduler.h>__, la cui documentazione è consultabile dall'apposita [repository](https://github.com/arkhipenko/TaskScheduler).  
 Grazie a questa libreria, è possibile istanziare un oggetto __*Scheduler*__, che permette la creazione di più task evitando di utilizzare la funzione __*delay()*__, che causerebbe un __blocco totale di tutti i processi__.  
 Tutti i task sono stati istanziati basandosi sul __flusso di esecuzione__ del *setup* e sul __flusso di esecuzione__ del *loop*.  
 
-Flusso di esecuzione del *setup*:
+- Flusso di esecuzione del *setup*:
 
 ![setup path](/documentation/setup_path.png)
 
-Flusso di esecuzione del *loop*:
+NB: come misura di sicurezza per i servomotori, li facciamo muovere fino al raggiungimento della loro posizione di default nel caso in cui si sia interrotta la corrente mentre si stavano muovendo.  
 
-![loop path](/documentation/execution_path.png)
+- Flusso di esecuzione del *loop*:
 
-In base a questo punto, è possibile definire anche il flusso di esecuzione dell'oggetto __Scheduler__ istanziato:
+![loop path](/documentation/execution_path.png)  
+Nel loop vengono eseguite solo il loop dello scheduler in cui ci saranno dei task attivi.
+
+- Flusso dello scheduler
 
 ![scheduler path](/documentation/scheduler_path.png)
 
