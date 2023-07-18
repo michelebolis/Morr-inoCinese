@@ -169,6 +169,8 @@ Qui di seguito un suo screenshot:
 Lo schema elettrico invece è consultabile [qui](#schema-circuito-e-schema-elettrico).  
 Qui di seguito un suo screenshot:  
 
+![Schema elettrico](/documentation/img/Morr-ino%20cinese%20circuit.jpg)
+
 ## Analisi statistica
 
 La terza ed ultima parte riguarda l'analisi statistica sui risultati emessi, atta a valutare la bontà degli stimatori scelti.  
