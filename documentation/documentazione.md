@@ -170,7 +170,7 @@ Qui di seguito un suo screenshot:
 Lo schema elettrico invece è consultabile [qui](https://easyeda.com/editor#id=3ba47ce4e3224986a22450973c7e75b9).  
 Qui di seguito un suo screenshot:  
 
-![Schema elettrico](/documentation/img/Morr-ino%20cinese%20circuit.jpg)
+![Schema elettrico](/documentation/img/Morr-ino%20circuit.jpg)
 
 ## Analisi statistica
 
