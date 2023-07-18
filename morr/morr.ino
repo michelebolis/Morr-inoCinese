@@ -63,18 +63,27 @@ Scheduler scheduler;
 
 const float secondi_countdown = 5;
 int secondi_rimasti=secondi_countdown;
-void print_countdown(){
-  if(secondi_rimasti==0){disable_countdown();}
-  else{
+
+/**
+ * Funzione che stampa su porta Serial il countdown durante il rilevamento della mossa per 5 secondi.
+*/
+void print_countdown() {
+  if(secondi_rimasti == 0) {
+    disable_countdown();
+  } else{
     Serial.print("Inizio Gesto: resta con il gesto per "); Serial.println(secondi_rimasti);
-    secondi_rimasti--;
+    secondi_rimasti --;
   }
 }
 
+/** Task di countdown durante il rilevamento della mossa */
 Task countdown(1*TASK_SECOND, TASK_SECOND, print_countdown);
 
-void disable_countdown(){
-  secondi_rimasti=secondi_countdown;
+/**
+ * Funzione che disabilita il Task del countdown uguagliando il valore dei secondi rimasti a quelli del countdown.
+*/
+void disable_countdown() {
+  secondi_rimasti = secondi_countdown;
   countdown.disable();
 }
 
@@ -93,15 +102,15 @@ void readSegno() {
     update_currentLight();
     if (checkIndice() && checkMedio() && checkPalmo() && checkAnulare()) {
       carta ++;
-    }else if (checkIndice() && checkMedio() && checkPalmo()){
+    } else if (checkIndice() && checkMedio() && checkPalmo()) {
       forbice ++;
-    }else if (checkPalmo()) {
+    } else if (checkPalmo()) {
       sasso ++;
-    }else{
+    } else{
       nonRiconosciuto ++;
     }
-    rilevazioni_rimaste--;
-  }else{
+    rilevazioni_rimaste --;
+  } else {
     Serial.println();
     Serial.print("Lo stimatore moda dice: ");
     moda = checkSegno_moda(nonRiconosciuto, carta, sasso, forbice);
@@ -115,15 +124,21 @@ void readSegno() {
   }
 }
 
+/** Valore corrispondente al delay del task del campionamento */
 const float adjustment = secondi_countdown/taglia_campione;
+
+/** Task in esecuzione durante il campionamento della mossa */
 Task sampling(adjustment*TASK_SECOND, TASK_SECOND, readSegno);
 
-void disable_sampling(){
-  rilevazioni_rimaste=taglia_campione;
-  nonRiconosciuto=0;
-  carta=0;
-  sasso=0;
-  forbice=0;
+/**
+ * Funzione che disabilita il Task "sampling"
+*/
+void disable_sampling() {
+  rilevazioni_rimaste = taglia_campione;
+  nonRiconosciuto = 0;
+  carta = 0;
+  sasso = 0;
+  forbice = 0;
   sampling.disable();
 }
 
@@ -155,8 +170,7 @@ void disable_idle_waitMossa() {
 /**
  * Funzione che posizione le dita della mano in posizione neutra e fa servo_defaultPositionre lo stato dello Scheduler al Task "inizio mossa".
 */
-void restart()
-{
+void restart() {
   if(mossa!=1){
     servo_defaultPosition();
   }
@@ -201,13 +215,16 @@ void checkButtons()
 Task idle_waitButton(1*TASK_SECOND, TASK_SECOND, checkButtons);
 
 /**
- * disable il Task predisposto alla selezione di una mossa.
+ * Disabilita il Task predisposto alla selezione di una mossa.
 */
 void disable_idle_waitButton() {
   idle_waitButton.disable();
 }
 
-void enable_idle_waitButton(){
+/**
+ * Abilita il Task predisposto all'attesa della pressione del bottone relativo alla mossa effettuata dall'utente.
+*/
+void enable_idle_waitButton() {
   idle_waitButton.enable();
 }
 
@@ -370,7 +387,7 @@ bool checkAnulare() {
  * Stabilisce il segno effettuato dall'utente confrontando il massimo tra i valori che possono essere rilevati (non riconosciuto, carta, forbice e sasso) e lo stampa.
 */
 int checkSegno_moda(int nonRiconosciuto, int carta, int sasso, int forbice) {
-  int countMax= (max(max(max(nonRiconosciuto, carta), sasso), forbice));
+  int countMax = (max(max(max(nonRiconosciuto, carta), sasso), forbice));
   if (countMax = nonRiconosciuto) {
     Serial.print("Segno non riconosciuto ma a caso dico ");
     return checkSegno_random();
