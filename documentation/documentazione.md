@@ -163,9 +163,9 @@ Infine notiamo l'utilizzo dell'attivazione di un task (restart_idle_waitMossa) r
 
 ### Schema circuitale e schema elettrico
 
-Lo schema circuitale del progetto è consultabile attraverso una sua riproduzione in un progetto di [TinkerCard](https://www.tinkercad.com/things/2YdawX71xvz).  
+Lo schema circuitale del progetto è consultabile attraverso una sua riproduzione in un progetto di [TinkerCard](https://www.tinkercad.com/things/3Kic4NV4jvM-copy-of-morr-ino/editel?tenant=circuits).  
 Qui di seguito un suo screenshot:  
-[aggiungere screen](#schema-circuito-e-schema-elettrico)
+![Schema](/documentation/img/Morr-ino.png)
 
 Lo schema elettrico invece è consultabile [qui](https://easyeda.com/editor#id=3ba47ce4e3224986a22450973c7e75b9).  
 Qui di seguito un suo screenshot:  
