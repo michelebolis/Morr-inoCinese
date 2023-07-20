@@ -328,3 +328,26 @@ Mossa effettuata: forbice!
 Mossa rilevata: forbice, carta, carta, forbice, !
 
 Lettura luce
+palmoMano: 639
+indice: 630
+medio: 484
+anulare: 509
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Max Luce palmo mano: 647
+Max Luce indice: 641
+Max Luce medio: 498
+Max Luce anulare: 542
+
+Lettura luce
