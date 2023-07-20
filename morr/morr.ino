@@ -107,8 +107,6 @@ void readSegno() {
       } else {
         forbice ++;
       }
-    } else if (isCoveredDito(current_light.indice, max_light.indice) || isCoveredDito(current_light.medio, max_light.medio) || isCoveredDito(current_light.anulare, max_light.anulare)) {
-      nonRiconosciuto ++;
     } else {
       sasso ++;
     }
