@@ -56,3 +56,243 @@ Mossa effettuata: sasso!
 Mossa rilevata: carta, forbice, carta, forbice, !
 
 Lettura luce
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.20 11:36:58 =~=~=~=~=~=~=~=~=~=~=~=
+Max Luce palmo mano: 807
+Max Luce indice: 848
+Max Luce medio: 714
+Max Luce anulare: 780
+
+Lettura luce
+palmoMano: 529
+indice: 869
+medio: 729
+anulare: 794
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: Segno non riconosciuto ma a caso dico carta!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: Segno non riconosciuto ma a caso dico forbice!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: sasso!
+Mossa rilevata: carta, carta, carta, forbice, !
+
+Lettura luce
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.20 11:43:38 =~=~=~=~=~=~=~=~=~=~=~=
+Max Luce palmo mano: 793
+Max Luce indice: 844
+Max Luce medio: 714
+Max Luce anulare: 777
+
+Lettura luce
+palmoMano: 480
+indice: 864
+medio: 733
+anulare: 795
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: sasso!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: sasso!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: sasso!
+Mossa rilevata: sasso, carta, carta, sasso, !
+
+Lettura luce
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.20 11:46:17 =~=~=~=~=~=~=~=~=~=~=~=
+Max Luce palmo mano: 792
+Max Luce indice: 848
+Max Luce medio: 723
+Max Luce anulare: 778
+
+Lettura luce
+palmoMano: 534
+indice: 872
+medio: 723
+anulare: 796
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: Segno non riconosciuto ma a caso dico carta!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: forbice!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto forbice
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: forbice!
+Mossa rilevata: carta, carta, carta, forbice, !
+
+Lettura luce
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.20 11:51:54 =~=~=~=~=~=~=~=~=~=~=~=
+Max Luce palmo mano: 799
+Max Luce indice: 854
+Max Luce medio: 725
+Max Luce anulare: 787
+
+Lettura luce
+palmoMano: 479
+indice: 634
+medio: 535
+anulare: 801
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: forbice!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: forbice!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto forbice
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: forbice!
+Mossa rilevata: forbice, carta, carta, forbice, !
+
+Lettura luce
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.20 14:21:05 =~=~=~=~=~=~=~=~=~=~=~=
+Max Luce palmo mano: 616
+Max Luce indice: 618
+Max Luce medio: 473
+Max Luce anulare: 496
+
+Lettura luce
+palmoMano: 527
+indice: 821
+medio: 672
+anulare: 736
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: sasso!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: sasso!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.20 14:22:59 =~=~=~=~=~=~=~=~=~=~=~=
+Max Luce palmo mano: 753
+Max Luce indice: 819
+Max Luce medio: 671
+Max Luce anulare: 735
+
+Lettura luce
+palmoMano: 593
+indice: 820
+medio: 673
+anulare: 737
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: sasso!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: sasso!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: sasso!
+Mossa rilevata: sasso, carta, carta, sasso, !
+
+Lettura luce
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.20 14:24:23 =~=~=~=~=~=~=~=~=~=~=~=
+Max Luce palmo mano: 744
+Max Luce indice: 816
+Max Luce medio: 663
+Max Luce anulare: 733
+
+Lettura luce
+palmoMano: 537
+indice: 815
+medio: 662
+anulare: 733
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: sasso!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: sasso!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.20 14:25:59 =~=~=~=~=~=~=~=~=~=~=~=
+Max Luce palmo mano: 754
+Max Luce indice: 818
+Max Luce medio: 669
+Max Luce anulare: 735
+
+Lettura luce
+palmoMano: 600
+indice: 819
+medio: 670
+anulare: 735
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: sasso!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: sasso!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: sasso!
+Mossa rilevata: sasso, carta, carta, sasso, !
+
+Lettura luce

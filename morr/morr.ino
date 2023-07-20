@@ -343,15 +343,27 @@ void setup_scheduler(){
  * Funzione predisposta a far tornare i servomotori in posizione neutra.
 */
 void servo_defaultPosition() {
-  for (int pos = 0; pos < 180; pos ++) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
+  for (int pos = 0; pos < 180; pos ++) 
   {
     mano.indice.write(pos);
     mano.medio.write(pos);
+    delay(15);
+  }
+
+  for (int pos = 0; pos < 180; pos ++) 
+  {
     mano.anulare.write(pos);
-    mano.mignolo.write(pos);
+        mano.mignolo.write(pos);
+    delay(15);
+  }
+
+  for (int pos = 0; pos < 180; pos ++) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
+  {
     mano.pollice.write(pos);
     delay(15);
   }
+
+
 }
 
 /**
