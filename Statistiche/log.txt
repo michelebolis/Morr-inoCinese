@@ -1,77 +1,58 @@
-=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.09 08:57:13 =~=~=~=~=~=~=~=~=~=~=~=
-Max Luce palmo mano: 750
-Max Luce indice: 791
-Max Luce medio: 644
-Max Luce anulare: 657
+
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.20 10:32:11 =~=~=~=~=~=~=~=~=~=~=~=
+Max Luce palmo mano: 816
+Max Luce indice: 864
+Max Luce medio: 733
+Max Luce anulare: 797
+
 Lettura luce
-palmoMano: 563
-indice: 798
-medio: 645
-anulare: 661
+palmoMano: 615
+indice: 874
+medio: 742
+anulare: 806
 
 Inizio Gesto: resta con il gesto per 5
 Inizio Gesto: resta con il gesto per 4
 Inizio Gesto: resta con il gesto per 3
 Inizio Gesto: resta con il gesto per 2
 Inizio Gesto: resta con il gesto per 1
-Lo stimatore moda dice: Sasso!
-Lo stimatore random dice: Carta!
+
+Lo stimatore moda dice: sasso!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: sasso!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
 Hai detto sasso
 Guarda la tua mossa
 
 Risultati:
 Mossa effettuata: sasso!
-Mossa rilevata: sasso, carta!
+Mossa rilevata: sasso, carta, carta, sasso, !
+
 Lettura luce
-=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.09 09:04:57 =~=~=~=~=~=~=~=~=~=~=~=
-Max Luce palmo mano: 749
-Max Luce indice: 791
-Max Luce medio: 640
-Max Luce anulare: 656
-Lettura luce
-palmoMano: 593
-indice: 796
-medio: 644
-anulare: 659
+palmoMano: 754
+indice: 875
+medio: 744
+anulare: 807
 
 Inizio Gesto: resta con il gesto per 5
 Inizio Gesto: resta con il gesto per 4
 Inizio Gesto: resta con il gesto per 3
 Inizio Gesto: resta con il gesto per 2
 Inizio Gesto: resta con il gesto per 1
-Lo stimatore moda dice: Sasso!
-Lo stimatore random dice: Carta!
-Hai detto carta
-Guarda la tua mossa
 
-Risultati: 
-Mossa effettuata: carta!
-Mossa rilevata: sasso, carta!
+Lo stimatore moda dice: Segno non riconosciuto ma a caso dico carta!
+Lo stimatore random dice: forbice!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: Segno non riconosciuto ma a caso dico forbice!
 
-Lettura luce
-palmoMano: 388
-indice: 603
-medio: 471
-anulare: 655
-
-Inizio Gesto: resta con il gesto per 5
-Inizio Gesto: resta con il gesto per 4
-Inizio Gesto: resta con il gesto per 3
-Inizio Gesto: resta con il gesto per 2
-Inizio Gesto: resta con il gesto per 1
-Lo stimatore moda dice: Forbice!
-Lo stimatore random dice: Carta!
-Hai detto forbice
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
 Guarda la tua mossa
 
 Risultati:
-Mossa effettuata: forbice!
-Mossa rilevata: forbice, carta!
+Mossa effettuata: sasso!
+Mossa rilevata: carta, forbice, carta, forbice, !
 
-Lettura luce
-=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.14 13:02:38 =~=~=~=~=~=~=~=~=~=~=~=
-LettMax Luce palmo mano: 288
-Max Luce indice: 279
-Max Luce medio: 178
-Max Luce anulare: 207
 Lettura luce
