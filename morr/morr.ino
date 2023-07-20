@@ -23,27 +23,23 @@ struct light_detected{
 };
 
 /**
- * Struttura di costanti intere rappresentati i pin della board adibiti al funzionamento dell'intero circuito.
+ * Costanti intere rappresentati i GPIO della board adibiti al funzionamento dell'intero circuito.
 */
-struct pin_list {
-    const int palmoMano = A4;
-    const int indice = A3;
-    const int medio = A2;
-    const int anulare = A1;
+#define pinLightPalmoMano A4
+#define pinLightIndice A3
+#define pinLightMedio A2
+#define pinLightAnulare A1
   
-    const int bottone_sasso = 8;
-    const int bottone_carta = 9;
-    const int bottone_forbice = 10;
+#define pinButtonSasso 8
+#define pinButtonCarta 9
+#define pinButtonForbice 10
     
-    const int servo_indice = 6;
-    const int servo_medio = 5;
-    const int servo_anulare = 4;
-    const int servo_mignolo = 3;
-    const int servo_pollice = 2;
-};
+#define pinServoIndice 6
+#define pinServoMedio 5
+#define pinServoAnulare 4
+#define pinServoMignolo 3
+#define pinServoPollice 2
 
-
-pin_list pins;
 mano_servo mano;
 light_detected max_light;
 light_detected current_light;
@@ -54,9 +50,11 @@ light_detected current_light;
     1 = carta
     2 = forbice
 */
-int moda;
-int randomize;
-int mossa; 
+byte moda;
+byte randomize;
+byte alwaysCarta;
+byte modaPesata;
+byte mossa; 
 
 /** Nuovo oggetto Scheduler istanziato per i Task che comporranno il circuito */
 Scheduler scheduler;
@@ -100,28 +98,41 @@ int forbice;
 void readSegno() {
   if(rilevazioni_rimaste>0){
     update_currentLight();
-    if (checkIndice() && checkMedio() && checkPalmo() && checkAnulare()) {
-      carta ++;
-    } else if (checkIndice() && checkMedio() && checkPalmo()) {
-      forbice ++;
-    } else if (checkPalmo()) {
-      sasso ++;
-    } else{
+    if (!isCovered(current_light.palmoMano, max_light.palmoMano)) {
       nonRiconosciuto ++;
+    }else if (isCoveredDito(current_light.indice, max_light.indice) && isCoveredDito(current_light.medio, max_light.medio)){
+      if (isCoveredDito(current_light.anulare, max_light.anulare)){
+        carta++;
+      }else{
+        forbice++;
+      }
+    }else if (isCoveredDito(current_light.indice, max_light.indice) || isCoveredDito(current_light.medio, max_light.medio) || isCoveredDito(current_light.anulare, max_light.anulare)){
+      nonRiconosciuto++;
+    }else{
+      sasso++;
     }
     rilevazioni_rimaste --;
   } else {
-    Serial.println();
-    Serial.print("Lo stimatore moda dice: ");
-    moda = checkSegno_moda(nonRiconosciuto, carta, sasso, forbice);
-    Serial.print("Lo stimatore random dice: ");
-    randomize = checkSegno_random();
-
-    Serial.println();
-    Serial.println("Premi il buttone corrispondente alla mossa che hai effettuato");
-    disable_sampling();
-    enable_idle_waitButton();
+    stimaSegno();
   }
+}
+
+void stimaSegno(){
+  Serial.println();
+  Serial.print("Lo stimatore moda dice: ");
+  moda = stimatoreModa(nonRiconosciuto, carta, sasso, forbice);
+  print_mossa(moda);
+  Serial.println("!");
+  
+  Serial.print("Lo stimatore random dice: ");
+  randomize = stimatoreRandom();
+  print_mossa(randomize);
+  Serial.println("!");
+  
+  Serial.println();
+  Serial.println("Premi il buttone corrispondente alla mossa che hai effettuato");
+  disable_sampling();
+  enable_idle_waitButton();
 }
 
 /** Valore corrispondente al delay del task del campionamento */
@@ -149,7 +160,7 @@ void disable_sampling() {
 void checkidle_waitMossa()
 {
    update_currentLight();
-   if (checkPalmo()) {
+   if (isCovered(current_light.palmoMano, max_light.palmoMano)) {
      disable_idle_waitMossa();
      print_currentLight();
      countdown.enable();
@@ -185,30 +196,37 @@ Task restart_idle_waitMossa(1*TASK_SECOND, TASK_SECOND, restart);
 */
 void checkButtons()
 {
-  int sasso = digitalRead(pins.bottone_sasso);
-  int carta = digitalRead(pins.bottone_carta);
-  int forbice = digitalRead(pins.bottone_forbice);
-  if (sasso+forbice+carta==0){
+  bool sasso = digitalRead(pinButtonSasso)==1;
+  bool carta = digitalRead(pinButtonCarta)==1;
+  bool forbice = digitalRead(pinButtonForbice)==1;
+  if (!(sasso || forbice || carta)){
     return;
   }
-  if(sasso == 1) {
-    Serial.println("Hai detto sasso");
+  if(sasso) {
+    mossa = 0; // Assegno il risultato della mossa
+    Serial.print("Hai detto ");
+    print_mossa(mossa);
+    Serial.println();
     disable_idle_waitButton();
     servo_sassoPosition();
-    mossa = 0; // Assegno il risultato della mossa
-  }else if(carta == 1) {
-    Serial.println("Hai detto carta");
-    disable_idle_waitButton();
+  }else if(carta) {
     mossa = 1;
-  }else if(forbice == 1) {
-    Serial.println("Hai detto forbice");
+    Serial.print("Hai detto ");
+    print_mossa(mossa);
+    Serial.println();
     disable_idle_waitButton();
-    servo_forbicePosition();
-    mossa = 2; 
+  }else if(forbice) {
+    mossa = 2;
+    Serial.print("Hai detto ");
+    print_mossa(mossa);
+    Serial.println();
+    disable_idle_waitButton();
+    servo_forbicePosition(); 
   }
   restart_idle_waitMossa.enableDelayed(5000);
   Serial.println("Guarda la tua mossa");
   print_risultati();
+  setup_maxLight(20);
 }
 
 /** Task per la mossa da selezionare */
@@ -249,6 +267,7 @@ void setup() {
   setup_maxLight(20);
   Serial.begin(9600);
   print_maxLight(); // Stampa della luce massima (corrispondente alla luce iniziale)
+  Serial.println();
   setup_scheduler();
   Serial.println("Lettura luce");
 }
@@ -261,24 +280,24 @@ void loop() {
  * Associa ad ogni variabile Servo presente in mano, il corrispettivo pin
 */
 void setup_servoAttach(){
-  mano.indice.attach(pins.servo_indice); 
-  mano.medio.attach(pins.servo_medio);
-  mano.anulare.attach(pins.servo_anulare);
-  mano.mignolo.attach(pins.servo_mignolo);
-  mano.pollice.attach(pins.servo_pollice);
+  mano.indice.attach(pinServoIndice); 
+  mano.medio.attach(pinServoMedio);
+  mano.anulare.attach(pinServoAnulare);
+  mano.mignolo.attach(pinServoMignolo);
+  mano.pollice.attach(pinServoPollice);
 }
 
 /**
  * Inizializza i pin del circuito predisposti agli input.
 */
 void setup_pinMode() {
-  pinMode(pins.bottone_sasso, INPUT);
-  pinMode(pins.bottone_carta, INPUT);
-  pinMode(pins.bottone_forbice, INPUT);
-  pinMode(pins.palmoMano, INPUT);
-  pinMode(pins.indice, INPUT);
-  pinMode(pins.medio, INPUT);
-  pinMode(pins.anulare, INPUT);
+  pinMode(pinButtonSasso, INPUT);
+  pinMode(pinButtonCarta, INPUT);
+  pinMode(pinButtonForbice, INPUT);
+  pinMode(pinLightPalmoMano, INPUT);
+  pinMode(pinLightIndice, INPUT);
+  pinMode(pinLightMedio, INPUT);
+  pinMode(pinLightAnulare, INPUT);
 }
 
 /**
@@ -286,10 +305,10 @@ void setup_pinMode() {
 */
 void setup_maxLight(int n) {
   for (int i=0; i<n; i++){
-    max_light.palmoMano += analogRead(pins.palmoMano);
-    max_light.indice += analogRead(pins.indice);
-    max_light.medio += analogRead(pins.medio);
-    max_light.anulare += analogRead(pins.anulare);
+    max_light.palmoMano += analogRead(pinLightPalmoMano);
+    max_light.indice += analogRead(pinLightIndice);
+    max_light.medio += analogRead(pinLightMedio);
+    max_light.anulare += analogRead(pinLightAnulare);
   }
   max_light.palmoMano = max_light.palmoMano/n;
   max_light.indice = max_light.indice/n;
@@ -355,77 +374,52 @@ void print_mossa(int mossa){
   }
 }
 
-/**
- * Funzione predisposta al controllo della variazione di luce sul palmo della mano.
-*/
-bool checkPalmo() {
-  return current_light.palmoMano < max_light.palmoMano*(1-variazione);
+bool isCovered(int light, int maxLight){
+  float variazione = 0.1;
+  return light < maxLight*(1-variazione);
 }
 
-/**
- * Funzione predisposta al controllo della variazione di luce sul dito indice.
-*/
-bool checkIndice() {
-  return current_light.indice < max_light.indice*(1-variazioneDita);
-}
-
-/**
- * Funzione predisposta al controllo della variazione di luce sul dito medio.
-*/
-bool checkMedio() {
-  return current_light.medio < max_light.medio*(1-variazioneDita);
-}
-
-/**
- * Funzione predisposta al controllo della variazione di luce sul dito anulare.
-*/
-bool checkAnulare() {
-  return current_light.anulare < max_light.anulare*(1-variazioneDita);
+bool isCoveredDito(int light, int maxLight){
+  float variazioneDita = 0.05;
+  return light < maxLight*(1-variazione);
 }
 
 /**
  * Stabilisce il segno effettuato dall'utente confrontando il massimo tra i valori che possono essere rilevati (non riconosciuto, carta, forbice e sasso) e lo stampa.
 */
-int checkSegno_moda(int nonRiconosciuto, int carta, int sasso, int forbice) {
+byte stimatoreModa(int nonRiconosciuto, int carta, int sasso, int forbice) {
   int countMax = (max(max(max(nonRiconosciuto, carta), sasso), forbice));
   if (countMax = nonRiconosciuto) {
     Serial.print("Segno non riconosciuto ma a caso dico ");
-    return checkSegno_random();
+    return stimatoreRandom();
   }
-  if (countMax = carta) {
-    Serial.println("Carta!");
-    return 1;
-  }
-  if (countMax = sasso) {
-    Serial.println("Sasso!");
-    return 0;
-  }
-  if (countMax = forbice) {
-    Serial.println("Forbice!");
-    return 2;
-  }
+  if (countMax = carta) {return 1;}
+  if (countMax = sasso) {return 0;}
+  if (countMax = forbice) {return 2;}
 }
 
 /**
  * Stabilisce randomicamente un segno fra i 3 possibili e lo stampa.
 */
-int checkSegno_random() {
-  long randomSegno = random(3);
-  switch (randomSegno) {
-      case 0: Serial.println("Sasso!"); return 0;
-      case 1: Serial.println("Carta!"); return 1;
-      case 2: Serial.println("Forbice!"); return 2;
-  }  
+byte stimatoreRandom() {
+  return random(3); 
+}
+
+/*
+ * Stabilisce sempre che il segno effettuato sia carta
+*/
+byte stimatoreCarta(){
+  return 1;
 }
 
 /**
  * Aggiorna i valori riguardanti la luce letta al momento.
 */
 void update_currentLight() {
-  current_light.palmoMano = analogRead(pins.palmoMano);
-  current_light.indice = analogRead(pins.indice);
-  current_light.medio = analogRead(pins.medio);
-  current_light.anulare = analogRead(pins.anulare);
+  current_light.palmoMano = analogRead(pinLightPalmoMano);
+  current_light.indice = analogRead(pinLightIndice);
+  current_light.medio = analogRead(pinLightMedio);
+  current_light.anulare = analogRead(pinLightAnulare);
 }
 
 /**
