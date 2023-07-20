@@ -200,3 +200,20 @@ Dal punto di vista grafico, rappresentiamo la matrice di confusione con una __ma
 Il codice completo dell'analisi statistica è consultabile [qui](/Statistiche/stats.ipynb).
 
 ## Demo di funzionamento
+Qui riportate delle foto del progetto e dei link per prendere visione dei video di demo del funzionamento dell'intero circuito.
+
+- **Foto completa del progetto:**
+![prima foto](/documentation/img/Foto%20Morr-ino%201.jpg)
+
+- **Foto completa del progetto (dall'alto):**
+![seconda foto](/documentation/img/Foto%20Morr-ino%202.jpg)
+
+- **Foto del circuito relativo alla mano controllata dai servomotori:**
+![terza foto](/documentation/img/Foto%20Morr-ino%203.jpg)
+
+- **Foto del circuito relativo alle fotoresistenze:**
+![quarta foto](/documentation/img/Foto%20Morr-ino%204.jpg)
+
+Qui di seguito i link Google Drive per visualizzare le demo di funzionamento:
+- [Mossa sasso](https://drive.google.com/file/d/1U6gLr4jH_8dBaV2jkoux5j-k9-5gwm0W/view?usp=sharing)
+- [Mossa forbice](https://drive.google.com/file/d/1X2ugpWjyJjUMjBYs63GH24JkOhWEugbO/view?usp=sharing)
