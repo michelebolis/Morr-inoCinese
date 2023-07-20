@@ -4,7 +4,7 @@
 /**
  * Struttura della mano meccanica le cui dita vengono mosse tramite appositi Servo-Motori
 */
-struct mano_servo{
+struct mano_servo {
     Servo pollice;
     Servo indice;
     Servo medio;
@@ -13,9 +13,9 @@ struct mano_servo{
 };
 
 /**
- * Struttura di interi che rappresenta la luce letta in 4 punti: il palmo della mano, il dito indice, il medio e l'anulare.
+ * Struttura di interi che rappresenta la luce letta da 4 fotoresistenze: il palmo della mano, il dito indice, il medio e l'anulare.
 */
-struct light_detected{
+struct light_detected {
     int palmoMano;
     int indice;
     int medio;
@@ -56,14 +56,13 @@ byte alwaysCarta;
 byte modaPesata;
 byte mossa; 
 
-/** Nuovo oggetto Scheduler istanziato per i Task che comporranno il circuito */
 Scheduler scheduler;
 
 const float secondi_countdown = 5;
-int secondi_rimasti=secondi_countdown;
+int secondi_rimasti = secondi_countdown;
 
 /**
- * Funzione che stampa su porta Serial il countdown durante il rilevamento della mossa per 5 secondi.
+ * Funzione che stampa su porta Serial il countdown durante il rilevamento della mossa per "secondi_countdown" secondi.
 */
 void print_countdown() {
   if(secondi_rimasti == 0) {
@@ -78,14 +77,16 @@ void print_countdown() {
 Task countdown(1*TASK_SECOND, TASK_SECOND, print_countdown);
 
 /**
- * Funzione che disabilita il Task del countdown uguagliando il valore dei secondi rimasti a quelli del countdown.
+ * Funzione che disabilita il Task del countdown resettando il valore dei secondi rimasti a quelli del countdown.
 */
 void disable_countdown() {
   secondi_rimasti = secondi_countdown;
   countdown.disable();
 }
 
+/** Numero di rilevazioni totali che ho intenzione di effettuare */
 const float taglia_campione = 10;
+
 int rilevazioni_rimaste = taglia_campione;
 int nonRiconosciuto;
 int carta;
@@ -93,23 +94,23 @@ int sasso;
 int forbice;
 
 /**
- * Rileva la mossa avvalendosi di 5 secondi_countdown per farlo correttamente e ne stampa i risultati dei vari stimatori.
+ * Funzione che rileva una mossa finche non si è arrivati al numero di rilevazioni desiderato con una velocita di campionamento ottenuta dal numero di rilevazioni / il numero dei secondi del countdown. Una volta ottenuto il numero di rilevazioni richieste, il segno viene stimato.
 */
 void readSegno() {
   if(rilevazioni_rimaste>0){
     update_currentLight();
     if (!isCovered(current_light.palmoMano, max_light.palmoMano)) {
       nonRiconosciuto ++;
-    }else if (isCoveredDito(current_light.indice, max_light.indice) && isCoveredDito(current_light.medio, max_light.medio)){
-      if (isCoveredDito(current_light.anulare, max_light.anulare)){
-        carta++;
-      }else{
-        forbice++;
+    } else if (isCoveredDito(current_light.indice, max_light.indice) && isCoveredDito(current_light.medio, max_light.medio)){
+      if (isCoveredDito(current_light.anulare, max_light.anulare)) {
+        carta ++;
+      } else {
+        forbice ++;
       }
-    }else if (isCoveredDito(current_light.indice, max_light.indice) || isCoveredDito(current_light.medio, max_light.medio) || isCoveredDito(current_light.anulare, max_light.anulare)){
-      nonRiconosciuto++;
-    }else{
-      sasso++;
+    } else if (isCoveredDito(current_light.indice, max_light.indice) || isCoveredDito(current_light.medio, max_light.medio) || isCoveredDito(current_light.anulare, max_light.anulare)) {
+      nonRiconosciuto ++;
+    } else {
+      sasso ++;
     }
     rilevazioni_rimaste --;
   } else {
@@ -117,7 +118,10 @@ void readSegno() {
   }
 }
 
-void stimaSegno(){
+/**
+ * Date il numero di rilevazioni per ogni possibile mossa, il segno viene stabilito attraverso diversi stimatori. Viene poi stampata la mossa predetto per ognunno.
+*/
+void stimaSegno() {
   Serial.println();
   Serial.print("Lo stimatore moda dice: ");
   moda = stimatoreModa(nonRiconosciuto, carta, sasso, forbice);
@@ -146,13 +150,13 @@ void stimaSegno(){
 }
 
 /** Valore corrispondente al delay del task del campionamento */
-const float adjustment = secondi_countdown/taglia_campione;
+const float velocita_campionamento = secondi_countdown/taglia_campione;
 
 /** Task in esecuzione durante il campionamento della mossa */
-Task sampling(adjustment*TASK_SECOND, TASK_SECOND, readSegno);
+Task sampling(velocita_campionamento*TASK_SECOND, TASK_SECOND, readSegno);
 
 /**
- * Funzione che disabilita il Task "sampling"
+ * Funzione che disabilita il Task "sampling" resettando i conteggi delle mosse e delle rilevazioni rimaste
 */
 void disable_sampling() {
   rilevazioni_rimaste = taglia_campione;
@@ -164,7 +168,7 @@ void disable_sampling() {
 }
 
 /**
- * Aggiorna la lettura della luce corrente e controlla che non venga rilevato il palmo della mano.
+ * Aggiorna la lettura della luce corrente e controlla che non venga coperto la fotoresistenza del palmo della mano.
  * Nel caso in cui lo rilevasse, comincia la lettura del segno.
 */
 void checkidle_waitMossa()
@@ -182,17 +186,17 @@ void checkidle_waitMossa()
 Task idle_waitMossa(1*TASK_SECOND, TASK_SECOND, checkidle_waitMossa);
 
 /**
- * disable il Task predisposto all'inizio di una mossa.
+ * Disabilita il Task predisposto all'inizio di una mossa.
 */
 void disable_idle_waitMossa() {
   idle_waitMossa.disable();
 }
 
 /**
- * Funzione che posizione le dita della mano in posizione neutra e fa servo_defaultPositionre lo stato dello Scheduler al Task "inizio mossa".
+ * Funzione che fa ritornare i servomotori con un'angolazione di 0 gradi se la mossa effettuata era diverso da "carta"
 */
 void restart() {
-  if(mossa!=1){
+  if(mossa != 1){
     servo_defaultPosition();
   }
   disable_restart();
@@ -202,7 +206,7 @@ void restart() {
 Task restart_idle_waitMossa(1*TASK_SECOND, TASK_SECOND, restart);
 
 /**
- * Funzione che rileva, grazie alla pressione dell'utente di uno dei 3 bottoni preposti, la mossa effettuata segnalandolo all'utente tramite stampa di un messaggio ed il movimento della mano meccanica.
+ * Funzione che rileva, grazie alla pressione dell'utente di uno dei 3 bottoni preposti, la mossa effettuata. Vengono quindi richiamate le funzioni per tradurre la mossa con i servomotori, vengono stampati i risultati, viene rilevata nuovamente la lucemassima e infine viene abilitato il task "restart_idle_waitMossa" posticipandolo di 5s
 */
 void checkButtons()
 {
@@ -257,18 +261,13 @@ void enable_idle_waitButton() {
 }
 
 /**
- * disable il Task predisposto al ritorno in stato di "inizio mossa" (restart_idle_waitMossa) ed attiva quello di inizio di una nuova mossa.
+ * Disabilita il Task predisposto al ritorno in stato di "inizio mossa" (restart_idle_waitMossa) ed attiva quello di inizio di una nuova mossa.
 */
 void disable_restart() {
   restart_idle_waitMossa.disable();
   idle_waitMossa.enable();
   Serial.println("Lettura luce");
 }
-
-/** Variabili di tipo float necessarie per il calcolo più accurato dei valori riguardanti la luce rilevata durante l'esecuzione di una mossa */
-float variazione = 0.1;
-float variazioneDita = 0.05;
-
 
 void setup() {
   setup_servoAttach();
@@ -298,7 +297,7 @@ void setup_servoAttach(){
 }
 
 /**
- * Inizializza i pin del circuito predisposti agli input.
+ * Inizializza i GPIO della board.
 */
 void setup_pinMode() {
   pinMode(pinButtonSasso, INPUT);
@@ -341,7 +340,7 @@ void setup_scheduler(){
 }
 
 /**
- * Funzione predisposta a far servo_defaultPositionre in posizione neutra la mano.
+ * Funzione predisposta a far tornare i servomotori in posizione neutra.
 */
 void servo_defaultPosition() {
   for (int pos = 0; pos < 180; pos ++) // Viene impostato un ciclo con valori che vanno da 180 a 0 gradi
@@ -356,7 +355,7 @@ void servo_defaultPosition() {
 }
 
 /**
- * Stampa i risultati della mossa effettuata dopo la pressione del bottone e stampa anche i rilevamenti degli stimatori moda e random.
+ * Stampa i risultati della mossa effettuata dopo la pressione del bottone e stampa anche i rilevamenti degli stimatori moda, random, carta e moda pesata.
 */
 void print_risultati() {
   Serial.println();
@@ -374,15 +373,18 @@ void print_risultati() {
   Serial.println();
 }
 
+/**
+  Funzione che, data la codifica della mossa, stampa la mossa corrispondente seguita da una ','
+*/
 void printStimatore(byte mossa){
   print_mossa(mossa);
   Serial.print(", ");
 }
 
 /*
-  Funzione che, seguendo la codifica delle mosse, stampa la mossa corrispondente all intero passato come argomento.
+  Funzione che, data la cofica della mossa, stampa la mossa corrispondente all intero passato come argomento.
 */
-void print_mossa(int mossa){
+void print_mossa(int mossa) {
   switch (mossa) {
     case 0: Serial.print("sasso"); break;
     case 1: Serial.print("carta"); break;
@@ -391,18 +393,24 @@ void print_mossa(int mossa){
   }
 }
 
-bool isCovered(int light, int maxLight){
+/**
+ * Funzione che ritorna un valore booleano corrispondente alla copertura (o non copertura) del sensore del palmo della mano
+*/
+bool isCovered(int light, int maxLight) {
   float variazione = 0.1;
-  return light < maxLight*(1-variazione);
-}
-
-bool isCoveredDito(int light, int maxLight){
-  float variazioneDita = 0.05;
-  return light < maxLight*(1-variazione);
+  return light < maxLight*(1 - variazione);
 }
 
 /**
- * Stabilisce il segno effettuato dall'utente confrontando il massimo tra i valori che possono essere rilevati (non riconosciuto, carta, forbice e sasso) e lo stampa.
+ * Funzione che ritorna un valore booleano corrispondente alla copertura (o non copertura) di uno dei sensori delle dita della mano 
+*/
+bool isCoveredDito(int light, int maxLight) {
+  float variazioneDita = 0.05;
+  return light < maxLight*(1 - variazione);
+}
+
+/**
+ * Stabilisce il segno effettuato dall'utente scegliendo il conteggio con la frequenza assoluta maggiore e lo stampa.
 */
 byte stimatoreModa(int nonRiconosciuto, int carta, int sasso, int forbice) {
   int countMax = (max(max(max(nonRiconosciuto, carta), sasso), forbice));
@@ -425,18 +433,18 @@ byte stimatoreRandom() {
 /*
  * Stabilisce sempre che il segno effettuato sia carta
 */
-byte stimatoreCarta(){
+byte stimatoreCarta() {
   return 1;
 }
 
 /**
- * Stabilisce il segno effettuato in base al peso per ogni mossa riconosciuta dallo stimatore moda.
+ * Stabilisce il segno effettuato associando un peso ad ogni mossa e applicandole alle frequenze assolute, richiamando poi lo stimatore moda.
 */
 byte stimatoreModaPesata(int nonRiconosciuto, int carta, int sasso, int forbice) {
-  float pesoNonRiconosciuto = 0.5;
-  float pesoCarta = 0.9;
+  float pesoNonRiconosciuto = 0.5; //ci possono essere molti false rilevazioni
+  float pesoCarta = 0.9; 
   float pesoSasso = 0.8;
-  float pesoForbice = 1;
+  float pesoForbice = 1; // segno rilevato con maggior difficolta
   
   return stimatoreModa(nonRiconosciuto * pesoNonRiconosciuto, carta * pesoCarta, pesoSasso * sasso, pesoForbice * forbice);
 }
