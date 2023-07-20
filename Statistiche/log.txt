@@ -1040,3 +1040,458 @@ Mossa effettuata: forbice!
 Mossa rilevata: forbice, carta, carta, forbice, !
 
 Lettura luce
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2023.07.20 17:08:37 =~=~=~=~=~=~=~=~=~=~=~=
+Max Luce palmo mano: 789
+Max Luce indice: 830
+Max Luce medio: 681
+Max Luce anulare: 744
+
+Lettura luce
+palmoMano: 642
+indice: 829
+medio: 680
+anulare: 743
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: sasso!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: sasso!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: sasso!
+Mossa rilevata: sasso, carta, carta, sasso, !
+
+Lettura luce
+palmoMano: 546
+indice: 631
+medio: 507
+anulare: 695
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto carta
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: carta!
+Mossa rilevata: carta, carta, carta, carta, !
+
+Lettura luce
+palmoMano: 535
+indice: 668
+medio: 522
+anulare: 707
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: forbice!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto carta
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: carta!
+Mossa rilevata: carta, forbice, carta, carta, !
+
+Lettura luce
+palmoMano: 650
+indice: 828
+medio: 683
+anulare: 754
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: Segno non riconosciuto ma a caso dico forbice!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: sasso!
+Mossa rilevata: forbice, carta, carta, carta, !
+
+Lettura luce
+palmoMano: 558
+indice: 630
+medio: 500
+anulare: 604
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: forbice!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto carta
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: carta!
+Mossa rilevata: carta, forbice, carta, carta, !
+
+Lettura luce
+palmoMano: 676
+indice: 830
+medio: 676
+anulare: 756
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: sasso!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto forbice
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: forbice!
+Mossa rilevata: carta, sasso, carta, carta, !
+
+Lettura luce
+palmoMano: 570
+indice: 832
+medio: 688
+anulare: 755
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: Segno non riconosciuto ma a caso dico forbice!
+Lo stimatore random dice: forbice!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: Segno non riconosciuto ma a caso dico carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: sasso!
+Mossa rilevata: forbice, forbice, carta, carta, !
+
+Lettura luce
+palmoMano: 495
+indice: 701
+medio: 515
+anulare: 709
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: sasso!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto carta
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: carta!
+Mossa rilevata: carta, sasso, carta, carta, !
+
+Lettura luce
+palmoMano: 607
+indice: 696
+medio: 629
+anulare: 755
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: forbice!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto forbice
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: forbice!
+Mossa rilevata: carta, forbice, carta, carta, !
+
+Lettura luce
+palmoMano: 554
+indice: 831
+medio: 688
+anulare: 754
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: sasso!
+Lo stimatore random dice: sasso!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: sasso!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: sasso!
+Mossa rilevata: sasso, sasso, carta, sasso, !
+
+Lettura luce
+palmoMano: 643
+indice: 827
+medio: 607
+anulare: 752
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: forbice!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto carta
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: carta!
+Mossa rilevata: carta, forbice, carta, carta, !
+
+Lettura luce
+palmoMano: 745
+indice: 831
+medio: 688
+anulare: 755
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: sasso!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto forbice
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: forbice!
+Mossa rilevata: carta, sasso, carta, carta, !
+
+Lettura luce
+palmoMano: 536
+indice: 831
+medio: 687
+anulare: 755
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: sasso!
+Lo stimatore random dice: forbice!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: sasso!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: sasso!
+Mossa rilevata: sasso, forbice, carta, sasso, !
+
+Lettura luce
+palmoMano: 581
+indice: 715
+medio: 536
+anulare: 679
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto carta
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: carta!
+Mossa rilevata: carta, carta, carta, carta, !
+
+Lettura luce
+palmoMano: 648
+indice: 810
+medio: 602
+anulare: 758
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto forbice
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: forbice!
+Mossa rilevata: carta, carta, carta, carta, !
+
+Lettura luce
+palmoMano: 602
+indice: 836
+medio: 694
+anulare: 735
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: Segno non riconosciuto ma a caso dico carta!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: Segno non riconosciuto ma a caso dico sasso!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto sasso
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: sasso!
+Mossa rilevata: carta, carta, carta, sasso, !
+
+Lettura luce
+palmoMano: 558
+indice: 633
+medio: 508
+anulare: 698
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: carta!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto carta
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: carta!
+Mossa rilevata: carta, carta, carta, carta, !
+
+Lettura luce
+palmoMano: 555
+indice: 670
+medio: 524
+anulare: 728
+
+Inizio Gesto: resta con il gesto per 5
+Inizio Gesto: resta con il gesto per 4
+Inizio Gesto: resta con il gesto per 3
+Inizio Gesto: resta con il gesto per 2
+Inizio Gesto: resta con il gesto per 1
+
+Lo stimatore moda dice: carta!
+Lo stimatore random dice: sasso!
+Lo stimatore carta dice: carta!
+Lo stimatore moda pesata dice: carta!
+
+Premi il buttone corrispondente alla mossa che hai effettuato
+Hai detto forbice
+Guarda la tua mossa
+
+Risultati:
+Mossa effettuata: forbice!
+Mossa rilevata: carta, sasso, carta, carta, !
