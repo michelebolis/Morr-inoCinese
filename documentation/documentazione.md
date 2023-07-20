@@ -13,7 +13,7 @@
       - [Riproduzione della mossa](#riproduzione-della-mossa)
   - [Dettagli implementativi](#dettagli-implementativi)
     - [Task Scheduler](#task-scheduler)
-    - [Schema circuito e schema elettrico](#schema-circuitale-e-schema-elettrico)
+    - [Schema circuitale e schema elettrico](#schema-circuitale-e-schema-elettrico)
   - [Analisi statistica](#analisi-statistica)
   - [Demo di funzionamento](#demo-di-funzionamento)
 
@@ -142,7 +142,7 @@ Tutti i task sono stati istanziati basandosi sul __flusso di esecuzione__ del *s
 
 - Flusso di esecuzione del *setup*:
 
-![setup path](/documentation/img/setup_path.png)
+![setup path](/documentation/img/setup_path.jpg)
 
 **NB**: come misura di sicurezza per i servomotori, li facciamo muovere fino al raggiungimento della loro posizione di default nel caso in cui si sia interrotta la corrente mentre si stavano muovendo.  
 
