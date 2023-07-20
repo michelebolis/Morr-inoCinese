@@ -129,6 +129,16 @@ void stimaSegno(){
   print_mossa(randomize);
   Serial.println("!");
   
+  Serial.print("Lo stimatore carta dice: ");
+  alwaysCarta = stimatoreCarta();
+  print_mossa(alwaysCarta);
+  Serial.println("!");
+
+  Serial.print("Lo stimatore moda pesata dice: ");
+  modaPesata = stimatoreModaPesata(nonRiconosciuto, carta, sasso, forbice);
+  print_mossa(modaPesata);
+  Serial.println("!");
+
   Serial.println();
   Serial.println("Premi il buttone corrispondente alla mossa che hai effettuato");
   disable_sampling();
@@ -354,12 +364,19 @@ void print_risultati() {
   Serial.print("Mossa effettuata: ");
   print_mossa(mossa);
   Serial.println("!");
+  
   Serial.print("Mossa rilevata: ");
-  print_mossa(moda);
-  Serial.print(", ");
-  print_mossa(randomize);
+  printStimatore(moda);
+  printStimatore(randomize);
+  printStimatore(alwaysCarta);
+  printStimatore(modaPesata);
   Serial.println("!");
   Serial.println();
+}
+
+void printStimatore(byte mossa){
+  print_mossa(mossa);
+  Serial.print(", ");
 }
 
 /*
@@ -410,6 +427,18 @@ byte stimatoreRandom() {
 */
 byte stimatoreCarta(){
   return 1;
+}
+
+/**
+ * Stabilisce il segno effettuato in base al peso per ogni mossa riconosciuta dallo stimatore moda.
+*/
+byte stimatoreModaPesata(int nonRiconosciuto, int carta, int sasso, int forbice) {
+  float pesoNonRiconosciuto = 0.5;
+  float pesoCarta = 0.9;
+  float pesoSasso = 0.8;
+  float pesoForbice = 1;
+  
+  return stimatoreModa(nonRiconosciuto * pesoNonRiconosciuto, carta * pesoCarta, pesoSasso * sasso, pesoForbice * forbice);
 }
 
 /**
