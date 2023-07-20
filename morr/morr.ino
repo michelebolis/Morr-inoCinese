@@ -406,7 +406,7 @@ bool isCovered(int light, int maxLight) {
 */
 bool isCoveredDito(int light, int maxLight) {
   float variazioneDita = 0.05;
-  return light < maxLight*(1 - variazione);
+  return light < maxLight*(1 - variazioneDita);
 }
 
 /**
