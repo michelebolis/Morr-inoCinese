@@ -454,7 +454,7 @@ byte stimatoreCarta() {
 */
 byte stimatoreModaPesata(int nonRiconosciuto, int carta, int sasso, int forbice) {
   float pesoNonRiconosciuto = 0.5; //ci possono essere molti false rilevazioni
-  float pesoCarta = 0.9; 
+  float pesoCarta = 0.8; 
   float pesoSasso = 0.8;
   float pesoForbice = 1; // segno rilevato con maggior difficolta
   
