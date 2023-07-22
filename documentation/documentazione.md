@@ -67,7 +67,7 @@ Conteggio delle mosse rilevate:
 - Una mossa è carta SE tutte le fotoresistenza risultano coperte, quindi __palmo__, __indice__, __medio__ e __anulare__.
 - In tutti gli altri casi la mossa è considerata non riconosciuta.
 
-La rilevazione della mossa effettiva inizia quando la fotoresistenza del palmo della mano risulta coperta, in quanto essa è comune a tutte le mosse. Il campionamento avviene in 5 secondi, in cui è richiesto all'utente di mantenere la mossa tramite stampa di appositi messaggi sulla **porta Seriale**.
+La rilevazione della mossa effettiva inizia quando la fotoresistenza del palmo della mano risulta coperta, in quanto essa è comune a tutte le mosse. Il campionamento avviene in 5 secondi, in cui è richiesto all'utente di mantenere la mossa tramite stampa di appositi messaggi sulla __porta Seriale__.
 
 Chiaramente se la luce ambientale cambiasse, sia nel caso in cui aumenti la luce (non si rileverebbe quasi mai una mossa) sia nel caso in cui diminuisca (si rileverebbe quasi sempre carta), sarebbe necessario un riavvio per rilevare nuovamente la luce massima.  
 
@@ -78,21 +78,32 @@ I diversi classificatori, date in input il numero di rilevazioni per mossa, rest
 
 Gli stimatori proposti sono:
 
-- Lo __stimatore della moda__, che emette la mossa in base alla moda tra quelle rilevate.
+- Lo __stimatore della moda__ emette la mossa in base alla moda tra le frequenze assolute delle mosse rilevate.
 
 ```C++
   int countMax = (max(max(max(nonRiconosciuto, carta), sasso), forbice));
 ```
 
-- Lo __stimatore random__, che emette la mossa scegliendo in maniera pseudo-casuale 1 delle 3 disponibili, ignorando quindi i campionamenti effettuati.
+- Lo __stimatore random__ emette la mossa scegliendo in maniera pseudo-casuale 1 delle 3 disponibili, ignorando quindi i campionamenti effettuati.
 
 ```C++
 long randomSegno = random(3);
 ```
 
+- Lo __stimatore carta__ emette sempre la mossa della carta.
+- Lo __stimatore moda pesata__ applica uno scalare alle frequenze assolute, usando poi lo stimatore moda. In particolare ipotizzando molte mosse non riconosciute, dimezziamo tale frequenza e considerando la mossa della forbice la più problematica, applichiamo alle altre due mosse una diminuzione.
+
+```C++
+float pesoNonRiconosciuto = 0.5;
+float pesoCarta = 0.8; 
+float pesoSasso = 0.8;
+float pesoForbice = 1;   
+return stimatoreModa(nonRiconosciuto * pesoNonRiconosciuto, carta * pesoCarta, pesoSasso * sasso, pesoForbice * forbice);
+```
+
 A seguito della previsione di ciascuno stimatore, le mosse predette vengono stampate in output sulla console.  
 
-**NB**: nel caso dello stimatore moda SE il segno "*nonRiconosciuto*" ha frequenza maggiore, si utilizza lo **stimatore random** per avere comunque una mossa stimata e non avere degli NA nel dataset.
+**NB**: nel caso dello stimatore moda e della moda pesata, SE il segno "*nonRiconosciuto*" ha frequenza maggiore, si utilizza lo __stimatore random__ per avere comunque una mossa stimata e non avere degli NA nel dataset.
 
 ### Feedback e traduzione della mossa
 
@@ -157,7 +168,7 @@ Nel loop viene eseguito solo il loop dello scheduler in cui ci saranno dei task 
 
 Lo scheduler, come si puo notare, è usato principalmente con un solo task attivo alla volta tranne dopo il campionamento.  
 
-Grazie al **Task Scheduler**, è stato possibile separare il countdown, visibile a schermo, dal campionamento. In tal modo si può aumentare il numero di letture restando sempre nello stesso lasso di tempo del countdown, aumentando così la velocità di campionamento.  
+Grazie al __Task Scheduler__, è stato possibile separare il countdown, visibile a schermo, dal campionamento. In tal modo si può aumentare il numero di letture restando sempre nello stesso lasso di tempo del countdown, aumentando così la velocità di campionamento.  
 
 Infine notiamo l'utilizzo dell'attivazione di un task (restart_idle_waitMossa) rimandato di 5 secondi cosicchè si potesse vedere la mossa effettuata dalla mano meccanica prima di farla tornare nella posizione di default.
 
@@ -195,11 +206,30 @@ $$Sensibilità = {VP \over TP} $$
 - __Specificità__ --> Capacità del classificatore di lavorare con i negativi.
 $$Specificità = {VN \over TN} $$
 
-Dal punto di vista grafico, rappresentiamo la matrice di confusione con una __mappa di calore__ per evidenziare eventuali concentrazioni di errori.  
+Dal punto di vista grafico, rappresentiamo la matrice di confusione con una __mappa di calore__, nel caso migliore infatti ci aspettiamo che la concentrazione dei valori sia nelle posizioni (0, 0) e (1, 1).  
+Risultati ottenuti:
+
+- Classificatore __moda__
+  - Sasso: nei casi positivi lavora quasi sempre correttamente (97%) mentre commette degli errori non rilevando la mossa del sasso nel 10% circa dei casi.
+  - Carta: notiamo come il classificatore commetta molti falsi positivi.
+  - Forbice: notiamo che il classificatore, come probabile conseguenza dei falsi positivi della carta, commetta molti falsi negativi non rilevando quindi correttamente la forbice.
+
+  ![moda](img/moda.png)
+  ![modaStats](img/modaStats.PNG)
+- Classificatore __casuale__: come ci aspettavamo, la sensibilità per le tre mosse si aggira in un intorno del 33,3% mentre la specificità in un intorno del 66,6%. Le mosse infatti sono predette in modo casuale con una probabilità uguale per ciascuna mossa che quindi ha il 33,3% di possibilità di essere "scelta". La sensibilita media infatti è del 32,6% mentre la specificità media del 66,8%.
+  ![random](img/random.png)
+  ![randomStats](img/randomStats.PNG)
+- Classificatore __carta__: scegliendo sempre la mossa della carta, solo questa avrà una sensibilita non nulla, in particolare del 33,3% mentre le altre mosse avranno specificità del 66,6%.
+  ![carta](img/carta.png)
+  ![cartaStats](img/cartaStats.PNG)
+- Classificatore __moda pesata__: rispetto al classificatore della moda, notiamo un miglioramente generale sia per la sensibilità che per la specificatà (sia per le singole mosse che mediamente), soprattutto per quanto riguarda la mossa dell forbice, considerata quella più problematica.
+  ![modaPesata](img/modaPesata.png)
+  ![modaPesataStats](img/modaPesataStats.PNG)
 
 Il codice completo dell'analisi statistica è consultabile [qui](/Statistiche/stats.ipynb).
 
 ## Demo di funzionamento
+
 Qui riportate delle foto del progetto e dei link per prendere visione dei video di demo del funzionamento dell'intero circuito.
 
 - **Foto completa del progetto:**
@@ -215,5 +245,6 @@ Qui riportate delle foto del progetto e dei link per prendere visione dei video 
 ![quarta foto](/documentation/img/Foto%20Morr-ino%204.jpg)
 
 Qui di seguito i link Google Drive per visualizzare le demo di funzionamento:
+
 - [Mossa sasso](https://drive.google.com/file/d/1U6gLr4jH_8dBaV2jkoux5j-k9-5gwm0W/view?usp=sharing)
 - [Mossa forbice](https://drive.google.com/file/d/1X2ugpWjyJjUMjBYs63GH24JkOhWEugbO/view?usp=sharing)
