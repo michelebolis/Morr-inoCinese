@@ -10,6 +10,6 @@ Guida repository:
 
 - La documentazione completa è consultabile in [documentazione](documentation/documentazione.md).
 - Il codice completo utilizzato è reperibile in [morr.ino](morr/morr.ino).
-- L'analisi statistica dei classificatori è consultabile dal [Jupyter Notebook](statistiche/stats.ipynb) mentre il file da cui estraggo il dataset è riportato per intero [qui](statistiche/log.txt).
+- L'analisi statistica dei classificatori è consultabile dal [Jupyter Notebook](Statistiche/stats.ipynb) mentre il file da cui estraggo il dataset è riportato per intero [qui](statistiche/log.txt).
 
 Licenza: GNU General Public License v3.0  
