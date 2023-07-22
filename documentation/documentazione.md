@@ -222,7 +222,7 @@ Risultati ottenuti:
 - Classificatore __carta__: scegliendo sempre la mossa della carta, solo questa avrà una sensibilita non nulla, in particolare del 33,3% mentre le altre mosse avranno specificità del 66,6%.
   ![carta](img/carta.png)
   ![cartaStats](img/cartaStats.PNG)
-- Classificatore __moda pesata__: rispetto al classificatore della moda, notiamo un miglioramente generale sia per la sensibilità che per la specificatà (sia per le singole mosse che mediamente), soprattutto per quanto riguarda la mossa dell forbice, considerata quella più problematica.
+- Classificatore __moda pesata__: rispetto al classificatore della moda, notiamo un miglioramento generale sia per la sensibilità che per la specificità (sia per le singole mosse che mediamente), soprattutto per quanto riguarda la mossa della forbice, considerata quella più problematica.
   ![modaPesata](img/modaPesata.png)
   ![modaPesataStats](img/modaPesataStats.PNG)
 
